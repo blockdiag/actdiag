@@ -25,11 +25,11 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
         # draw frame of lane
         lane_frame = (headerbox[0], headerbox[1], headerbox[2],
                       pagesize.y - m.cellSize)
-        self.drawer.rectangle(lane_frame, outline=self.fill)
+        self.drawer.rectangle(lane_frame, outline='gray')
 
         # draw bottom line of lane-header
         xy = (XY(headerbox[0], headerbox[3]), XY(headerbox[2], headerbox[3]))
-        self.drawer.line(xy, fill=self.fill)
+        self.drawer.line(xy, fill='gray')
 
         lanewidth = m.nodeWidth + m.spanWidth
 
@@ -40,7 +40,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             # draw lane splitter
             if x2 + 1 != headerbox[2]:
                 xy = (XY(x2, lane_frame[1]), XY(x2, lane_frame[3]))
-                self.drawer.line(xy, fill=self.fill)
+                self.drawer.line(xy, fill='gray')
 
             # draw lane-label
             label = 'Lane %d' % (i + 1)
