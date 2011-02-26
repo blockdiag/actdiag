@@ -38,7 +38,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             x2 = x1 + m.nodeWidth + m.spanWidth
 
             # draw lane splitter
-            if x2 + 1 != headerbox[2]:
+            if x2 != headerbox[2]:
                 xy = (XY(x2, lane_frame[1]), XY(x2, lane_frame[3]))
                 self.drawer.line(xy, fill='gray')
 
