@@ -132,15 +132,15 @@ class DiagramLayoutManager:
         self.set_node_width()
         self.adjust_node_order()
 
-        for node in self.diagram.nodes:
-            node.xy = XY(node.xy.x + 1, node.xy.y)
-
         height = 0
         toplevel_nodes = [x for x in self.diagram.nodes if x.xy.x == 0]
         for node in self.diagram.nodes:
             if node.xy.x == 0:
                 self.set_node_height(node, height)
                 height = max(xy.y for xy in self.coordinates) + 1
+
+        for node in self.diagram.nodes:
+            node.xy = XY(node.xy.x + 1, node.xy.y)
 
     def get_related_nodes(self, node, parent=False, child=False):
         uniq = {}
