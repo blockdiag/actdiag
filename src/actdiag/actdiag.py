@@ -16,46 +16,36 @@ from blockdiag import utils
 
 class DiagramTreeBuilder:
     def build(self, tree):
-        diagram = self.instantiate(Diagram(), tree)
+        self.diagram = Diagram()
+        diagram = self.instantiate(self.diagram, tree)
+        for subgroup in diagram.traverse_groups():
+            if len(subgroup.nodes) == 0:
+                subgroup.group.nodes.remove(subgroup)
 
         self.bind_edges(diagram)
+
+        if len(self.diagram.lanes) == 0:
+            self.diagram.lanes.append(NodeGroup.get(None))
+
+        for node in self.diagram.nodes:
+            if node.group == self.diagram:
+                node.group = self.diagram.lanes[0]
+
         return diagram
 
-    def is_related_group(self, group1, group2):
-        if group1.is_parent(group2) or group2.is_parent(group1):
-            return True
-        else:
-            return False
-
     def belong_to(self, node, group):
-        if node.group and node.group.level > group.level:
-            override = False
-        else:
-            override = True
-
-        if node.group and node.group != group and override:
-            if not self.is_related_group(node.group, group):
-                msg = "DiagramNode could not belong to two groups"
-                raise RuntimeError(msg)
-
-            old_group = node.group
-
-            parent = group.parent(old_group.level + 1)
-            if parent:
-                if parent in old_group.nodes:
-                    old_group.nodes.remove(parent)
-
-                index = old_group.nodes.index(node)
-                old_group.nodes.insert(index + 1, parent)
-
-            old_group.nodes.remove(node)
-            node.group = None
+        if node.group and node.group != group and \
+           not isinstance(group, Diagram):
+            msg = "DiagramNode could not belong to two groups"
+            raise RuntimeError(msg)
 
         if node.group is None:
             node.group = group
 
-            if node not in group.nodes:
-                group.nodes.append(node)
+            if isinstance(node, NodeGroup):
+                self.diagram.lanes.append(node)
+            elif node not in self.diagram.nodes:
+                self.diagram.nodes.append(node)
 
     def unbelong_to(self, node, group):
         if node in group.nodes:
@@ -69,29 +59,31 @@ class DiagramTreeBuilder:
                 self.belong_to(node, group)
 
             elif isinstance(stmt, diagparser.Edge):
-                edge_from = DiagramNode.get(stmt.nodes.pop(0))
-                self.belong_to(edge_from, group)
+                nodes = stmt.nodes.pop(0)
+                edge_from = [DiagramNode.get(n) for n in nodes]
+                for node in edge_from:
+                    self.belong_to(node, group)
 
                 while len(stmt.nodes):
                     edge_type, edge_to = stmt.nodes.pop(0)
-                    edge_to = DiagramNode.get(edge_to)
-                    self.belong_to(edge_to, group)
+                    edge_to = [DiagramNode.get(n) for n in edge_to]
+                    for node in edge_to:
+                        self.belong_to(node, group)
 
-                    edge = DiagramEdge.get(edge_from, edge_to)
-                    if edge_type:
-                        attrs = [diagparser.Attr('dir', edge_type)]
-                        edge.set_attributes(attrs)
-                    edge.set_attributes(stmt.attrs)
+                    for node1 in edge_from:
+                        for node2 in edge_to:
+                            edge = DiagramEdge.get(node1, node2)
+                            if edge_type:
+                                attrs = [diagparser.Attr('dir', edge_type)]
+                                edge.set_attributes(attrs)
+                            edge.set_attributes(stmt.attrs)
 
                     edge_from = edge_to
 
             elif isinstance(stmt, diagparser.SubGraph):
                 subgroup = NodeGroup.get(stmt.id)
-                subgroup.level = group.level + 1
                 self.belong_to(subgroup, group)
                 self.instantiate(subgroup, stmt)
-                if len(subgroup.nodes) == 0:
-                    self.unbelong_to(subgroup, group)
 
             elif isinstance(stmt, diagparser.DefAttrs):
                 group.set_attributes(stmt.attrs)
@@ -119,10 +111,7 @@ class DiagramLayoutManager:
         self.coordinates = []
 
     def run(self):
-        for group in self.diagram.traverse_groups():
-            self.__class__(group).run()
-
-        self.edges = DiagramEdge.find_by_level(self.diagram.level)
+        self.edges = [e for e in DiagramEdge.find_all()]
         self.do_layout()
         self.diagram.fixiate()
 
@@ -133,13 +122,13 @@ class DiagramLayoutManager:
         self.adjust_node_order()
 
         height = 0
-        toplevel_nodes = [x for x in self.diagram.nodes if x.xy.x == 0]
-        for node in self.diagram.nodes:
+        toplevel_nodes = [x for x in self.diagram.traverse_nodes() if x.xy.x == 0]
+        for node in self.diagram.traverse_nodes():
             if node.xy.x == 0:
                 self.set_node_height(node, height)
                 height = max(xy.y for xy in self.coordinates) + 1
 
-        for node in self.diagram.nodes:
+        for node in self.diagram.traverse_nodes():
             node.xy = XY(node.xy.x + 1, node.xy.y)
 
     def get_related_nodes(self, node, parent=False, child=False):
@@ -156,8 +145,6 @@ class DiagramLayoutManager:
         related = []
         for uniq_node in uniq.keys():
             if uniq_node == node:
-                pass
-            elif uniq_node.group != node.group:
                 pass
             else:
                 related.append(uniq_node)
@@ -220,7 +207,7 @@ class DiagramLayoutManager:
         return False
 
     def set_node_width(self, depth=0):
-        for node in self.diagram.nodes:
+        for node in self.diagram.traverse_nodes():
             if node.xy.x != depth:
                 continue
 
@@ -234,12 +221,12 @@ class DiagramLayoutManager:
                 else:
                     child.xy = XY(node.xy.x + node.width, 0)
 
-        depther_node = [x for x in self.diagram.nodes if x.xy.x > depth]
+        depther_node = [x for x in self.diagram.traverse_nodes() if x.xy.x > depth]
         if len(depther_node) > 0:
             self.set_node_width(depth + 1)
 
     def adjust_node_order(self):
-        for node in self.diagram.nodes:
+        for node in self.diagram.traverse_nodes():
             parents = self.get_parent_nodes(node)
             if len(set(parents)) > 1:
                 for i in range(1, len(parents)):
@@ -415,18 +402,6 @@ def main():
 
     tree = diagparser.parse_file(infile)
     diagram = ScreenNodeBuilder.build(tree, separate=options.separate)
-
-    if options.separate:
-        for i, node in enumerate(diagram.traverse_groups()):
-            draw = DiagramDraw.DiagramDraw(options.type, node,
-                                           font=fontpath,
-                                           basediagram=diagram,
-                                           antialias=options.antialias)
-            draw.draw()
-            outfile2 = re.sub('.svg$', '_%d.svg' % i, outfile)
-            draw.save(outfile2)
-            node.href = './%s' % os.path.basename(outfile2)
-
     draw = DiagramDraw.DiagramDraw(options.type, diagram, outfile,
                                    font=fontpath, antialias=options.antialias)
     draw.draw()

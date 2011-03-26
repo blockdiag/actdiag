@@ -13,3 +13,11 @@ class Diagram(blockdiag.elements.Diagram):
         super(Diagram, self).__init__()
 
         self.orientation = 'portrait'
+        self.lanes = []
+
+
+class NodeGroup(blockdiag.elements.NodeGroup):
+    def __init__(self, id):
+        super(NodeGroup, self).__init__(id)
+
+        self.color = 'none'

@@ -33,9 +33,14 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
 
         lanewidth = m.nodeWidth + m.spanWidth
 
-        for i in range(self.diagram.width):
-            x1 = headerbox[0] + i * (m.nodeWidth + m.spanWidth)
-            x2 = x1 + m.nodeWidth + m.spanWidth
+        for i, lane in enumerate(self.diagram.lanes):
+            nodes = [n for n in self.diagram.nodes if n.group == lane]
+            x1 = min(n.xy.x for n in nodes)
+            x2 = max(n.xy.x + n.width for n in nodes)
+            print x1, x2
+
+            x1 = headerbox[0] + x1 * (m.nodeWidth + m.spanWidth)
+            x2 = headerbox[0] + (x2) * (m.nodeWidth + m.spanWidth)
 
             # draw lane splitter
             if x2 != headerbox[2]:
@@ -43,7 +48,10 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
                 self.drawer.line(xy, fill='gray')
 
             # draw lane-label
-            label = 'Lane %d' % (i + 1)
+            if lane.label:
+                label = lane.label
+            else:
+                label = 'Lane %d' % (i + 1)
             textbox = (x1, headerbox[1], x2, headerbox[3])
             self.drawer.textarea(textbox, label, fill=self.fill,
                                  font=self.font, fontsize=self.metrix.fontSize)
