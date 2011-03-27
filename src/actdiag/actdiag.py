@@ -108,12 +108,22 @@ class DiagramLayoutManager:
 
         self.circulars = []
         self.heightRefs = []
-        self.coordinates = []
 
     def run(self):
         self.edges = [e for e in DiagramEdge.find_all()]
         self.do_layout()
         self.diagram.fixiate()
+        self.fixiate_lanes()
+
+    def fixiate_lanes(self):
+        height = 0
+        for lane in self.diagram.lanes:
+            if self.coordinates[lane]:
+                for node in self.diagram.nodes:
+                    if node.group == lane:
+                        node.xy = XY(node.xy.x, node.xy.y + height)
+
+                height += max(xy.y for xy in self.coordinates[lane]) + 1
 
     def do_layout(self):
         self.detect_circulars()
@@ -123,10 +133,15 @@ class DiagramLayoutManager:
 
         height = 0
         toplevel_nodes = [x for x in self.diagram.traverse_nodes() if x.xy.x == 0]
+        self.initialize_markers()
         for node in self.diagram.traverse_nodes():
             if node.xy.x == 0:
+                lane = node.group
+                if self.coordinates[lane]:
+                    height = max(xy.y for xy in self.coordinates[lane]) + 1
+                else:
+                    height = 0
                 self.set_node_height(node, height)
-                height = max(xy.y for xy in self.coordinates) + 1
 
         for node in self.diagram.traverse_nodes():
             node.xy = XY(node.xy.x + 1, node.xy.y)
@@ -249,17 +264,27 @@ class DiagramLayoutManager:
 
         self.diagram.update_order()
 
-    def mark_xy(self, xy, width, height):
-        for w in range(width):
-            for h in range(height):
-                self.coordinates.append(XY(xy.x + w, xy.y + h))
+    def initialize_markers(self):
+        self.coordinates = {}
+        for lane in self.diagram.lanes:
+            self.coordinates[lane] = []
+
+    def mark_xy(self, node):
+        xy = node.xy
+        lane = node.group
+        for w in range(node.width):
+            for h in range(node.height):
+                self.coordinates[lane].append(XY(xy.x + w, xy.y + h))
+
+    def is_makred(self, lane, xy):
+        return xy in self.coordinates[lane]
 
     def set_node_height(self, node, height=0):
         xy = XY(node.xy.x, height)
-        if xy in self.coordinates:
+        if self.is_makred(node.group, xy):
             return False
         node.xy = xy
-        self.mark_xy(node.xy, node.width, node.height)
+        self.mark_xy(node)
 
         count = 0
         children = self.get_child_nodes(node)
@@ -273,7 +298,7 @@ class DiagramLayoutManager:
                 while True:
                     if self.set_node_height(child, height):
                         child.xy = XY(child.xy.x, height)
-                        self.mark_xy(child.xy, child.width, child.height)
+                        self.mark_xy(child)
                         self.heightRefs.append(child.id)
 
                         count += 1
