@@ -50,7 +50,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             if lane.label:
                 label = lane.label
             else:
-                label = 'Lane %d' % (i + 1)
+                label = u'Lane %d' % (i + 1)
             textbox = (x1, headerbox[1], x2, headerbox[3])
             self.drawer.textarea(textbox, label, fill=self.fill,
                                  font=self.font, fontsize=self.metrix.fontSize)
