@@ -8,7 +8,7 @@ from ConfigParser import SafeConfigParser
 from optparse import OptionParser
 from elements import *
 import DiagramDraw
-from blockdiag import diagparser
+import diagparser
 from blockdiag import noderenderer
 from blockdiag.utils.XY import XY
 from blockdiag import utils
@@ -83,7 +83,7 @@ class DiagramTreeBuilder:
 
                     edge_from = edge_to
 
-            elif isinstance(stmt, diagparser.SubGraph):
+            elif isinstance(stmt, diagparser.Lane):
                 subgroup = NodeGroup.get(stmt.id)
                 self.belong_to(subgroup, group)
                 self.instantiate(subgroup, stmt)
