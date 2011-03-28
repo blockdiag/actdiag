@@ -28,7 +28,7 @@ class DiagramTreeBuilder:
             self.diagram.lanes.append(NodeGroup.get(None))
 
         for node in self.diagram.nodes:
-            if node.group == self.diagram:
+            if node.group is None:
                 node.group = self.diagram.lanes[0]
 
         return diagram
