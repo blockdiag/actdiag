@@ -28,50 +28,42 @@ class DiagramTreeBuilder:
             self.diagram.lanes.append(NodeGroup.get(None))
 
         for node in self.diagram.nodes:
-            if node.group is None:
-                node.group = self.diagram.lanes[0]
+            if node.lane is None:
+                node.lane = self.diagram.lanes[0]
 
         return diagram
 
-    def belong_to(self, node, group):
-        if node.group and node.group != group and \
-           not isinstance(node.group, Diagram) and \
-           not isinstance(group, Diagram):
-            msg = "DiagramNode could not belong to two groups"
+    def belong_to(self, node, lane):
+        if lane and node.lane and node.lane != lane:
+            print node, node.lane, lane
+            msg = "DiagramNode could not belong to two lanes"
             raise RuntimeError(msg)
 
-        if node.group is None:
-            if not isinstance(group, Diagram):
-                node.group = group
+        node.group = self.diagram
+        if lane:
+            node.lane = lane
 
-            if isinstance(node, NodeGroup):
-                if node not in self.diagram.lanes:
-                    self.diagram.lanes.append(node)
-            elif node not in self.diagram.nodes:
-                self.diagram.nodes.append(node)
+        if node not in self.diagram.nodes:
+            self.diagram.nodes.append(node)
 
-    def unbelong_to(self, node, group):
-        if node in group.nodes:
-            group.nodes.remove(node)
-
-    def instantiate(self, group, tree):
+    def instantiate(self, group, tree, lane=None):
         for stmt in tree.stmts:
             if isinstance(stmt, diagparser.Node):
                 node = DiagramNode.get(stmt.id)
                 node.set_attributes(stmt.attrs)
-                self.belong_to(node, group)
+                self.belong_to(node, lane)
 
             elif isinstance(stmt, diagparser.Edge):
                 nodes = stmt.nodes.pop(0)
                 edge_from = [DiagramNode.get(n) for n in nodes]
                 for node in edge_from:
-                    self.belong_to(node, group)
+                    self.belong_to(node, lane)
 
                 while len(stmt.nodes):
                     edge_type, edge_to = stmt.nodes.pop(0)
                     edge_to = [DiagramNode.get(n) for n in edge_to]
                     for node in edge_to:
-                        self.belong_to(node, group)
+                        self.belong_to(node, lane)
 
                     for node1 in edge_from:
                         for node2 in edge_to:
@@ -84,12 +76,17 @@ class DiagramTreeBuilder:
                     edge_from = edge_to
 
             elif isinstance(stmt, diagparser.Lane):
-                subgroup = NodeGroup.get(stmt.id)
-                self.belong_to(subgroup, group)
-                self.instantiate(subgroup, stmt)
+                _lane = NodeGroup.get(stmt.id)
+                if _lane not in self.diagram.lanes:
+                    self.diagram.lanes.append(_lane)
+
+                self.instantiate(group, stmt, _lane)
 
             elif isinstance(stmt, diagparser.DefAttrs):
-                group.set_attributes(stmt.attrs)
+                if lane:
+                    lane.set_attributes(stmt.attrs)
+                else:
+                    self.diagram.set_attributes(stmt.attrs)
 
             else:
                 raise AttributeError("Unknown sentense: " + str(type(stmt)))
@@ -123,7 +120,7 @@ class DiagramLayoutManager:
         for lane in self.diagram.lanes:
             if self.coordinates[lane]:
                 for node in self.diagram.nodes:
-                    if node.group == lane:
+                    if node.lane == lane:
                         node.xy = XY(node.xy.x, node.xy.y + height)
 
                 height += max(xy.y for xy in self.coordinates[lane]) + 1
@@ -139,7 +136,7 @@ class DiagramLayoutManager:
         self.initialize_markers()
         for node in self.diagram.traverse_nodes():
             if node.xy.x == 0:
-                lane = node.group
+                lane = node.lane
                 if self.coordinates[lane]:
                     height = max(xy.y for xy in self.coordinates[lane]) + 1
                 else:
@@ -274,17 +271,16 @@ class DiagramLayoutManager:
 
     def mark_xy(self, node):
         xy = node.xy
-        lane = node.group
         for w in range(node.width):
             for h in range(node.height):
-                self.coordinates[lane].append(XY(xy.x + w, xy.y + h))
+                self.coordinates[node.lane].append(XY(xy.x + w, xy.y + h))
 
     def is_makred(self, lane, xy):
         return xy in self.coordinates[lane]
 
     def set_node_height(self, node, height=0):
         xy = XY(node.xy.x, height)
-        if self.is_makred(node.group, xy):
+        if self.is_makred(node.lane, xy):
             return False
         node.xy = xy
         self.mark_xy(node)

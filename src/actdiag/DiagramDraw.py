@@ -34,7 +34,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
         lanewidth = m.nodeWidth + m.spanWidth
 
         for i, lane in enumerate(self.diagram.lanes):
-            nodes = [n for n in self.diagram.nodes if n.group == lane]
+            nodes = [n for n in self.diagram.nodes if n.lane == lane]
             x1 = min(n.xy.x for n in nodes)
             x2 = max(n.xy.x + n.width for n in nodes)
 

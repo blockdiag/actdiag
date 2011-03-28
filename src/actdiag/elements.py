@@ -16,6 +16,13 @@ class Diagram(blockdiag.elements.Diagram):
         self.lanes = []
 
 
+class DiagramNode(blockdiag.elements.DiagramNode):
+    def __init__(self, id):
+        super(DiagramNode, self).__init__(id)
+
+        self.lane = None
+
+
 class NodeGroup(blockdiag.elements.NodeGroup):
     def __init__(self, id):
         super(NodeGroup, self).__init__(id)
