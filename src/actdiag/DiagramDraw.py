@@ -37,7 +37,6 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             nodes = [n for n in self.diagram.nodes if n.group == lane]
             x1 = min(n.xy.x for n in nodes)
             x2 = max(n.xy.x + n.width for n in nodes)
-            print x1, x2
 
             x1 = headerbox[0] + x1 * (m.nodeWidth + m.spanWidth)
             x2 = headerbox[0] + (x2) * (m.nodeWidth + m.spanWidth)
