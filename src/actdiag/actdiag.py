@@ -35,15 +35,18 @@ class DiagramTreeBuilder:
 
     def belong_to(self, node, group):
         if node.group and node.group != group and \
+           not isinstance(node.group, Diagram) and \
            not isinstance(group, Diagram):
             msg = "DiagramNode could not belong to two groups"
             raise RuntimeError(msg)
 
         if node.group is None:
-            node.group = group
+            if not isinstance(group, Diagram):
+                node.group = group
 
             if isinstance(node, NodeGroup):
-                self.diagram.lanes.append(node)
+                if node not in self.diagram.lanes:
+                    self.diagram.lanes.append(node)
             elif node not in self.diagram.nodes:
                 self.diagram.nodes.append(node)
 
