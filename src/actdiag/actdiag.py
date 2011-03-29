@@ -294,9 +294,10 @@ class DiagramLayoutManager:
             elif node is not None and node.xy.x >= child.xy.x:
                 pass
             else:
+                h = height
                 while True:
-                    if self.set_node_height(child, height):
-                        child.xy = XY(child.xy.x, height)
+                    if self.set_node_height(child, h):
+                        child.xy = XY(child.xy.x, h)
                         self.mark_xy(child)
                         self.heightRefs.append(child.id)
 
@@ -306,9 +307,10 @@ class DiagramLayoutManager:
                         if count == 0:
                             return False
 
-                        height += 1
+                        h += 1
 
-                height += 1
+                if node.lane == child.lane:
+                    height = h + 1
 
         return True
 
