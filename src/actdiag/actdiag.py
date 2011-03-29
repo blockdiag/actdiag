@@ -301,7 +301,11 @@ class DiagramLayoutManager:
             elif node is not None and node.xy.x >= child.xy.x:
                 pass
             else:
-                h = height
+                if node.lane == child.lane:
+                    h = height
+                else:
+                    h = 0
+
                 while True:
                     if self.set_node_height(child, h):
                         child.xy = XY(child.xy.x, h)
