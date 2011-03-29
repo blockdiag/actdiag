@@ -29,7 +29,14 @@ class DiagramTreeBuilder:
 
         for node in self.diagram.nodes:
             if node.lane is None:
-                node.lane = self.diagram.lanes[0]
+                edges = DiagramEdge.find(None, node)
+                parents = [e.node1 for e in edges if e.node1.lane]
+                parents.sort(lambda x, y: cmp(x.order, y.order))
+
+                if parents:
+                    node.lane = parents[0].lane
+                else:
+                    node.lane = self.diagram.lanes[0]
 
         return diagram
 
