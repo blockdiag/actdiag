@@ -17,14 +17,14 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
 
         # draw background of lane-header
         headerbox = (margin.x - m.spanWidth / 2,
-                     margin.y - m.cellSize,
+                     margin.y - m.cellSize * 2,
                      pagesize.x - margin.x + m.spanWidth / 2,
                      margin.y - m.cellSize + m.nodeHeight + m.spanHeight / 2)
         self.drawer.rectangle(headerbox, fill='#ffff99', outline='#ffff99')
 
         # draw frame of lane
         lane_frame = (headerbox[0], headerbox[1], headerbox[2],
-                      pagesize.y - m.cellSize)
+                      pagesize.y - margin.y + m.cellSize * 2)
         self.drawer.rectangle(lane_frame, outline='gray')
 
         # draw bottom line of lane-header
