@@ -148,12 +148,14 @@ def create_actdiag(self, code, format, filename, options, prefix='actdiag'):
     try:
         DiagramNode.clear()
         DiagramEdge.clear()
+        NodeGroup.clear()
+
         tree = parse(tokenize(code))
-        diagram = DiagramTreeBuilder().build(tree)
+        diagram = ScreenNodeBuilder().build(tree)
 
         antialias = self.builder.config.actdiag_antialias
-        draw = DiagramDraw.DiagramDraw(format, diagram, filename, font=fontpath,
-                                       antialias=antialias)
+        draw = DiagramDraw.DiagramDraw(format, diagram, filename,
+                                       font=fontpath, antialias=antialias)
     except Exception, e:
         raise ActdiagError('actdiag error:\n%s\n' % e)
 
