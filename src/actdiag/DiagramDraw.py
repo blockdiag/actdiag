@@ -11,7 +11,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
         self.draw_lane()
 
     def draw_lane(self):
-        m = self.metrix
+        m = self.metrix.originalMetrix()
         pagesize = self.pagesize()
         margin = m.pageMargin
 
