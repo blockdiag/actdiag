@@ -314,6 +314,8 @@ class DiagramLayoutManager:
 
                         count += 1
                         break
+                    elif node.lane != child.lane:
+                        h += 1
                     else:
                         if count == 0:
                             return False
