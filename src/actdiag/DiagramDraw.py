@@ -49,6 +49,8 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             # draw lane-label
             if lane.label:
                 label = lane.label
+            elif lane.id:
+                label = lane.id
             else:
                 label = u'Lane %d' % (i + 1)
             textbox = (x1, headerbox[1], x2, headerbox[3])
