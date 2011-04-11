@@ -139,7 +139,8 @@ class DiagramLayoutManager:
         self.adjust_node_order()
 
         height = 0
-        toplevel_nodes = [x for x in self.diagram.traverse_nodes() if x.xy.x == 0]
+        nodes_iter = self.diagram.traverse_nodes()
+        toplevel_nodes = [x for x in nodes_iter if x.xy.x == 0]
         self.initialize_markers()
         for node in self.diagram.traverse_nodes():
             if node.xy.x == 0:
@@ -243,7 +244,8 @@ class DiagramLayoutManager:
                 else:
                     child.xy = XY(node.xy.x + node.width, 0)
 
-        depther_node = [x for x in self.diagram.traverse_nodes() if x.xy.x > depth]
+        nodes_iter = self.diagram.traverse_nodes()
+        depther_node = [x for x in nodes_iter if x.xy.x > depth]
         if len(depther_node) > 0:
             self.set_node_width(depth + 1)
 
