@@ -282,12 +282,12 @@ class DiagramLayoutManager:
             for h in range(node.height):
                 self.coordinates[node.lane].append(XY(xy.x + w, xy.y + h))
 
-    def is_makred(self, lane, xy):
+    def is_marked(self, lane, xy):
         return xy in self.coordinates[lane]
 
     def set_node_height(self, node, height=0):
         xy = XY(node.xy.x, height)
-        if self.is_makred(node.lane, xy):
+        if self.is_marked(node.lane, xy):
             return False
         node.xy = xy
         self.mark_xy(node)
