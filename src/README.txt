@@ -77,6 +77,10 @@ Python Software Foundation License.
 History
 =======
 
+0.1.3 (2011-04-19)
+------------------
+* Fix bugs
+
 0.1.2 (2011-04-11)
 ------------------
 * Fix bugs
