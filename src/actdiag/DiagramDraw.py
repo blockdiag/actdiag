@@ -49,7 +49,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             # draw lane-label
             if lane.label:
                 label = lane.label
-            elif lane.id:
+            elif isinstance(lane.id, unicode):
                 label = lane.id
             else:
                 label = u'Lane %d' % (i + 1)
