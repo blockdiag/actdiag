@@ -53,7 +53,7 @@ setup(
      tests_require=['Nose','minimock','pep8'],
      entry_points="""
         [console_scripts]
-        actdiag = actdiag.actdiag:main
+        actdiag = actdiag.command:main
      """,
 )
 
