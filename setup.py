@@ -2,7 +2,9 @@
 from setuptools import setup, find_packages
 import os, sys
 
-version = '0.1.3'
+sys.path.insert(0, 'src')
+import actdiag
+
 long_description = \
         open(os.path.join("src","README.txt")).read() + \
         open(os.path.join("src","TODO.txt")).read()
@@ -19,7 +21,7 @@ classifiers = [
 
 setup(
      name='actdiag',
-     version=version,
+     version=actdiag.__version__,
      description='actdiag generate activity-diagram image file from spec-text file.',
      long_description=long_description,
      classifiers=classifiers,
@@ -51,7 +53,7 @@ setup(
      tests_require=['Nose','minimock','pep8'],
      entry_points="""
         [console_scripts]
-        actdiag = actdiag:main
+        actdiag = actdiag.actdiag:main
      """,
 )
 
