@@ -12,10 +12,10 @@ class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
 
         if diagram.page_padding is None:
             if diagram.orientation == 'landscape':
-                padding = self.nodeWidth + self.spanWidth
+                padding = self['nodeWidth'] + self['spanWidth']
                 self['pagePadding'] = [0, 0, 0, padding]
             else:
-                padding = self.nodeHeight + self.spanHeight
+                padding = self['nodeHeight'] + self['spanHeight']
                 self['pagePadding'] = [padding, 0, 0, 0]
 
     def originalMetrix(self):
