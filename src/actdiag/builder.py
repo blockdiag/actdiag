@@ -124,6 +124,13 @@ class DiagramLayoutManager:
 
                 height += max(xy.y for xy in self.coordinates[lane]) + 1
 
+            nodes = [n for n in self.diagram.nodes if n.lane == lane]
+            x = min(n.xy.x for n in nodes)
+            y = min(n.xy.y for n in nodes)
+            lane.xy = XY(x, y)
+            lane.width = max(n.xy.x + n.width for n in nodes) - x
+            lane.height = max(n.xy.y + n.height for n in nodes) - y
+
     def do_layout(self):
         self.detect_circulars()
 
@@ -142,9 +149,6 @@ class DiagramLayoutManager:
                 else:
                     height = 0
                 self.set_node_height(node, height)
-
-        for node in self.diagram.traverse_nodes():
-            node.xy = XY(node.xy.x + 1, node.xy.y)
 
     def get_related_nodes(self, node, parent=False, child=False):
         uniq = {}
@@ -343,5 +347,9 @@ class ScreenNodeBuilder:
         for node in diagram.traverse_nodes():
             node.xy = XY(node.xy.y, node.xy.x)
             node.width, node.height = (node.height, node.width)
+
+        for lane in diagram.lanes:
+            lane.xy = XY(lane.xy.y, lane.xy.x)
+            lane.width, lane.height = (lane.height, lane.width)
 
         diagram.width, diagram.height = (diagram.height, diagram.width)
