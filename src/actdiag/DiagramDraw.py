@@ -36,7 +36,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             self.drawer.line(xy, fill='gray')
 
         # render label of lanes
-        for lane in self.diagram.lanes:
+        for i, lane in enumerate(self.diagram.lanes):
             if lane.label:
                 label = lane.label
             elif isinstance(lane.id, unicode):
