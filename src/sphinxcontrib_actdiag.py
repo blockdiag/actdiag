@@ -312,3 +312,5 @@ def setup(app):
     app.add_config_value('actdiag_fontpath', None, 'html')
     app.add_config_value('actdiag_antialias', False, 'html')
     app.add_config_value('actdiag_tex_image_format', 'PNG', 'html')
+
+    app.warn('sphinxcontrib_actdiag was deprecated; Use sphinxcontrib.actdiag package (including DOT)')
