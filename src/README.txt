@@ -71,11 +71,16 @@ Requirements
 
 License
 =======
-Python Software Foundation License.
+Apache License 2.0
 
 
 History
 =======
+
+0.1.4 (2011-05-14)
+------------------
+* Change license to Apache License 2.0
+* Support blockdiag 0.8.1 core interface 
 
 0.1.3 (2011-04-19)
 ------------------
