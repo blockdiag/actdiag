@@ -31,7 +31,7 @@ from sphinx.errors import SphinxError
 from sphinx.util.osutil import ensuredir, ENOENT, EPIPE
 from sphinx.util.compat import Directive
 
-from seqdiag import DiagramDraw, builder, diagparser
+from actdiag import DiagramDraw, builder, diagparser
 
 class ActdiagError(SphinxError):
     category = 'Actdiag error'
