@@ -31,9 +31,7 @@ from sphinx.errors import SphinxError
 from sphinx.util.osutil import ensuredir, ENOENT, EPIPE
 from sphinx.util.compat import Directive
 
-from actdiag.actdiag import *
-from actdiag import DiagramDraw
-from actdiag.diagparser import parse, tokenize
+from seqdiag import DiagramDraw, builder, diagparser
 
 class ActdiagError(SphinxError):
     category = 'Actdiag error'
@@ -160,12 +158,8 @@ def create_actdiag(self, code, format, filename, options, prefix='actdiag'):
 
     draw = None
     try:
-        DiagramNode.clear()
-        DiagramEdge.clear()
-        NodeGroup.clear()
-
-        tree = parse(tokenize(code))
-        diagram = ScreenNodeBuilder().build(tree)
+        tree = diagparser.parse(diagparser.tokenize(code))
+        diagram = builder.ScreenNodeBuilder.build(tree)
 
         antialias = self.builder.config.actdiag_antialias
         draw = DiagramDraw.DiagramDraw(format, diagram, filename,
