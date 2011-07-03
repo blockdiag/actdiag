@@ -7,7 +7,7 @@ Features
 * Multilingualization for node-label (utf-8 only).
 
 You can get some examples and generated images on 
-`tk0miya.bitbucket.org <http://tk0miya.bitbucket.org/actdiag/build/html/index.html>`_ .
+`blockdiag.com <http://blockdiag.com/actdiag/build/html/index.html>`_ .
 
 Setup
 =====
@@ -32,7 +32,7 @@ spec-text setting sample
 
 Few examples are available.
 You can get more examples at
-`tk0miya.bitbucket.org <http://tk0miya.bitbucket.org/actdiag/build/html/index.html>`_ .
+`blockdiag.com <http://blockdiag.com/actdiag/build/html/index.html>`_ .
 
 simple.diag
 ------------
@@ -76,6 +76,10 @@ Apache License 2.0
 
 History
 =======
+
+0.1.6 (2011-07-03)
+------------------
+* Support input from stdin
 
 0.1.5 (2011-05-15)
 ------------------
