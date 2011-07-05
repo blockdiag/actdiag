@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.1.7 (2011-07-05)
+------------------
+* Fix bugs
+
 0.1.6 (2011-07-03)
 ------------------
 * Support input from stdin
