@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.1.8 (2011-09-30)
+------------------
+* Add diagram attribute: default_text_color
+
 0.1.7 (2011-07-05)
 ------------------
 * Fix bugs
