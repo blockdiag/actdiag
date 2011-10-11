@@ -18,12 +18,8 @@ from blockdiag.utils.XY import XY
 
 
 class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
-    def _draw_background(self):
-        super(DiagramDraw, self)._draw_background()
-        self.draw_lane()
-
-    def draw_lane(self):
-        m = self.metrix.originalMetrix()
+    def _draw_elements(self, **kwargs):
+        m = self.metrix
         pagesize = self.pagesize()
         margin = m.pageMargin
 
@@ -47,6 +43,8 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
             textbox = m.lane_textbox(lane)
             self.drawer.textarea(textbox, label, fill=self.fill,
                                  font=self.font, fontsize=self.metrix.fontSize)
+
+        super(DiagramDraw, self)._draw_elements(**kwargs)
 
 
 from DiagramMetrix import DiagramMetrix
