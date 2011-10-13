@@ -140,8 +140,8 @@ class DiagramLayoutManager:
             x = min(n.xy.x for n in nodes)
             y = min(n.xy.y for n in nodes)
             lane.xy = XY(x, y)
-            lane.width = max(n.xy.x + n.width for n in nodes) - x
-            lane.height = max(n.xy.y + n.height for n in nodes) - y
+            lane.colwidth = max(n.xy.x + n.colwidth for n in nodes) - x
+            lane.colheight = max(n.xy.y + n.colheight for n in nodes) - y
 
     def do_layout(self):
         self.detect_circulars()
@@ -247,10 +247,10 @@ class DiagramLayoutManager:
                     pass
                 elif node == child:
                     pass
-                elif child.xy.x > node.xy.x + node.width:
+                elif child.xy.x > node.xy.x + node.colwidth:
                     pass
                 else:
-                    child.xy = XY(node.xy.x + node.width, 0)
+                    child.xy = XY(node.xy.x + node.colwidth, 0)
 
         nodes_iter = self.diagram.traverse_nodes()
         depther_node = [x for x in nodes_iter if x.xy.x > depth]
@@ -288,8 +288,8 @@ class DiagramLayoutManager:
 
     def mark_xy(self, node):
         xy = node.xy
-        for w in range(node.width):
-            for h in range(node.height):
+        for w in range(node.colwidth):
+            for h in range(node.colheight):
                 self.coordinates[node.lane].append(XY(xy.x + w, xy.y + h))
 
     def is_marked(self, lane, xy):
@@ -358,10 +358,10 @@ class ScreenNodeBuilder:
     def rotate_diagram(klass, diagram):
         for node in diagram.traverse_nodes():
             node.xy = XY(node.xy.y, node.xy.x)
-            node.width, node.height = (node.height, node.width)
+            node.colwidth, node.colheight = (node.colheight, node.colwidth)
 
         for lane in diagram.lanes:
             lane.xy = XY(lane.xy.y, lane.xy.x)
-            lane.width, lane.height = (lane.height, lane.width)
+            lane.colwidth, lane.colheight = (lane.colheight, lane.colwidth)
 
-        diagram.width, diagram.height = (diagram.height, diagram.width)
+        diagram.colwidth, diagram.colheight = (diagram.colheight, diagram.colwidth)

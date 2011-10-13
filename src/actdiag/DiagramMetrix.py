@@ -24,19 +24,11 @@ class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
 
         if diagram.page_padding is None:
             if diagram.orientation == 'landscape':
-                padding = self['nodeWidth'] + self['spanWidth']
-                self['pagePadding'] = [0, 0, 0, padding]
+                padding = self.nodeWidth + self.spanWidth
+                self.pagePadding = [0, 0, 0, padding]
             else:
-                padding = self['nodeHeight'] + self['spanHeight']
-                self['pagePadding'] = [padding, 0, 0, 0]
-
-    def originalMetrix(self):
-        kwargs = {}
-        for key in self:
-            kwargs[key] = self[key]
-        kwargs['scale_ratio'] = 1
-
-        return DiagramMetrix(self, **kwargs)
+                padding = self.nodeHeight + self.spanHeight
+                self.pagePadding = [padding, 0, 0, 0]
 
     def pageSize(self, width=None, height=None):
         if width:
@@ -68,7 +60,7 @@ class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
                        XY(headerbox[2], headerbox[3]))]
 
         for lane in lanes[:-1]:
-            sep = lane.xy.x + lane.width
+            sep = lane.xy.x + lane.colwidth
             x1 = headerbox[0] + sep * (self.nodeWidth + self.spanWidth)
 
             xy = (XY(x1, outline[1]), XY(x1, outline[3]))
@@ -80,6 +72,6 @@ class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
     def lane_textbox(self, lane):
         headerbox = self.frame([]).headerbox
         x1 = headerbox[0] + lane.xy.x * (self.nodeWidth + self.spanWidth)
-        x2 = x1 + lane.width * (self.nodeWidth + self.spanWidth)
+        x2 = x1 + lane.colwidth * (self.nodeWidth + self.spanWidth)
 
         return (x1, headerbox[1], x2, headerbox[3])
