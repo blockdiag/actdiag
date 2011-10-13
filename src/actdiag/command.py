@@ -116,7 +116,3 @@ def main():
         sys.stderr.write(msg)
     except Exception, e:
         sys.stderr.write("ERROR: %s\n" % e)
-
-
-if __name__ == '__main__':
-    main()
