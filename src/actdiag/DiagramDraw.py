@@ -19,9 +19,9 @@ from blockdiag.utils.XY import XY
 
 class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
     def _draw_elements(self, **kwargs):
-        m = self.metrix
+        m = self.metrics
         pagesize = self.pagesize()
-        margin = m.pageMargin
+        margin = m.page_margin
 
         # render frame of activity lanes
         frame = m.frame(self.diagram.lanes)
@@ -42,10 +42,11 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
 
             textbox = m.lane_textbox(lane)
             self.drawer.textarea(textbox, label, fill=self.fill,
-                                 font=self.font, fontsize=self.metrix.fontSize)
+                                 font=self.font,
+                                 fontsize=self.metrics.fontsize)
 
         super(DiagramDraw, self)._draw_elements(**kwargs)
 
 
-from DiagramMetrix import DiagramMetrix
-DiagramDraw.set_metrix_class(DiagramMetrix)
+from DiagramMetrics import DiagramMetrics
+DiagramDraw.set_metrics_class(DiagramMetrics)
