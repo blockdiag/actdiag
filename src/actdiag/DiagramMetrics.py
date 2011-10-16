@@ -13,55 +13,55 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import blockdiag.DiagramMetrix
+import blockdiag.DiagramMetrics
 from blockdiag.utils.namedtuple import namedtuple
 from blockdiag.utils.XY import XY
 
 
-class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
+class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
     def __init__(self, diagram, **kwargs):
-        super(DiagramMetrix, self).__init__(diagram, **kwargs)
+        super(DiagramMetrics, self).__init__(diagram, **kwargs)
 
         if diagram.page_padding is None:
             if diagram.orientation == 'landscape':
-                padding = self.nodeWidth + self.spanWidth
-                self.pagePadding = [0, 0, 0, padding]
+                padding = self.node_width + self.span_width
+                self.page_padding = [0, 0, 0, padding]
             else:
-                padding = self.nodeHeight + self.spanHeight
-                self.pagePadding = [padding, 0, 0, 0]
+                padding = self.node_height + self.span_height
+                self.page_padding = [padding, 0, 0, 0]
 
-    def pageSize(self, width=None, height=None):
+    def pagesize(self, width=None, height=None):
         if width:
-            DiagramMetrix._width = width
+            DiagramMetrics._width = width
         else:
-            width = DiagramMetrix._width
+            width = DiagramMetrics._width
 
         if height:
-            DiagramMetrix._height = height
+            DiagramMetrics._height = height
         else:
-            height = DiagramMetrix._height
+            height = DiagramMetrics._height
 
-        return super(DiagramMetrix, self).pageSize(width, height)
+        return super(DiagramMetrics, self).pagesize(width, height)
 
     def frame(self, lanes):
-        pagesize = self.pageSize()
-        margin = self.pageMargin
+        pagesize = self.pagesize()
+        margin = self.page_margin
 
-        headerbox = (margin.x - self.spanWidth / 2,
-                     margin.y - self.cellSize * 2,
-                     pagesize.x - margin.x + self.spanWidth / 2,
-                     margin.y - self.cellSize + self.nodeHeight + \
-                     self.spanHeight / 2)
+        headerbox = (margin.x - self.span_width / 2,
+                     margin.y - self.cellsize * 2,
+                     pagesize.x - margin.x + self.span_width / 2,
+                     margin.y - self.cellsize + self.node_height + \
+                     self.span_height / 2)
 
         outline = (headerbox[0], headerbox[1], headerbox[2],
-                   pagesize.y - margin.y + self.cellSize * 2)
+                   pagesize.y - margin.y + self.cellsize * 2)
 
         separators = [(XY(headerbox[0], headerbox[3]),
                        XY(headerbox[2], headerbox[3]))]
 
         for lane in lanes[:-1]:
             sep = lane.xy.x + lane.colwidth
-            x1 = headerbox[0] + sep * (self.nodeWidth + self.spanWidth)
+            x1 = headerbox[0] + sep * (self.node_width + self.span_width)
 
             xy = (XY(x1, outline[1]), XY(x1, outline[3]))
             separators.append(xy)
@@ -71,7 +71,7 @@ class DiagramMetrix(blockdiag.DiagramMetrix.DiagramMetrix):
 
     def lane_textbox(self, lane):
         headerbox = self.frame([]).headerbox
-        x1 = headerbox[0] + lane.xy.x * (self.nodeWidth + self.spanWidth)
-        x2 = x1 + lane.colwidth * (self.nodeWidth + self.spanWidth)
+        x1 = headerbox[0] + lane.xy.x * (self.node_width + self.span_width)
+        x2 = x1 + lane.colwidth * (self.node_width + self.span_width)
 
         return (x1, headerbox[1], x2, headerbox[3])
