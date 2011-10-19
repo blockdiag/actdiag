@@ -364,4 +364,5 @@ class ScreenNodeBuilder:
             lane.xy = XY(lane.xy.y, lane.xy.x)
             lane.colwidth, lane.colheight = (lane.colheight, lane.colwidth)
 
-        diagram.colwidth, diagram.colheight = (diagram.colheight, diagram.colwidth)
+        size = (diagram.colheight, diagram.colwidth)
+        diagram.colwidth, diagram.colheight = size
