@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.2.0 (2011-10-19)
+------------------
+* Follow blockdiag-0.9.5 interface 
+
 0.1.9 (2011-10-11)
 ------------------
 * Fix bugs
