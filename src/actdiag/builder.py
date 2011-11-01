@@ -15,7 +15,7 @@
 
 from elements import *
 import diagparser
-from blockdiag.utils.XY import XY
+from blockdiag.utils import XY
 
 
 class DiagramTreeBuilder:

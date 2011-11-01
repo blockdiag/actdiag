@@ -14,8 +14,9 @@
 #  limitations under the License.
 
 import blockdiag.DiagramMetrics
-from blockdiag.utils.namedtuple import namedtuple
-from blockdiag.utils.XY import XY
+from blockdiag.utils import XY
+from blockdiag.utils.collections import namedtuple
+import elements
 
 
 class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
@@ -32,36 +33,44 @@ class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
 
     def pagesize(self, width=None, height=None):
         if width:
-            DiagramMetrics._width = width
+            self.colwidth = width
         else:
-            width = DiagramMetrics._width
+            width = self.colwidth
 
         if height:
-            DiagramMetrics._height = height
+            self.colheight = height
         else:
-            height = DiagramMetrics._height
+            height = self.colheight
 
         return super(DiagramMetrics, self).pagesize(width, height)
 
     def frame(self, lanes):
+        dummy = elements.DiagramNode(None)
+        dummy.xy = XY(0, 0)
+        dummy.colwidth = self.colwidth
+        dummy.colheight = self.colheight
+        cell = self.cell(dummy, use_padding=False)
+
         pagesize = self.pagesize()
         margin = self.page_margin
 
-        headerbox = (margin.x - self.span_width / 2,
-                     margin.y - self.cellsize * 2,
-                     pagesize.x - margin.x + self.span_width / 2,
-                     margin.y - self.cellsize + self.node_height + \
-                     self.span_height / 2)
+        headerbox = (cell.topleft.x - self.span_width / 2,
+                     cell.topleft.y - self.node_height - self.span_height - 2,
+                     cell.topright.x + self.span_width / 2,
+                     cell.topright.y - self.span_height / 2)
 
         outline = (headerbox[0], headerbox[1], headerbox[2],
-                   pagesize.y - margin.y + self.cellsize * 2)
+                   cell.bottom.y + self.span_height / 2)
 
         separators = [(XY(headerbox[0], headerbox[3]),
                        XY(headerbox[2], headerbox[3]))]
 
         for lane in lanes[:-1]:
-            sep = lane.xy.x + lane.colwidth
-            x1 = headerbox[0] + sep * (self.node_width + self.span_width)
+            x = lane.xy.x + lane.colwidth + 1
+
+            m = self.cell(lane, use_padding=False)
+            span_width = self.spreadsheet.span_width[x] / 2
+            x1 = m.right.x + span_width
 
             xy = (XY(x1, outline[1]), XY(x1, outline[3]))
             separators.append(xy)
@@ -71,7 +80,8 @@ class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
 
     def lane_textbox(self, lane):
         headerbox = self.frame([]).headerbox
-        x1 = headerbox[0] + lane.xy.x * (self.node_width + self.span_width)
-        x2 = x1 + lane.colwidth * (self.node_width + self.span_width)
+        m = self.cell(lane, use_padding=False)
+        x1 = m.left.x
+        x2 = m.right.x
 
         return (x1, headerbox[1], x2, headerbox[3])

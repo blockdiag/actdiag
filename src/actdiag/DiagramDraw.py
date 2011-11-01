@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.DiagramDraw
-from blockdiag.utils.XY import XY
+from blockdiag.utils import XY
 
 
 class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
@@ -42,8 +42,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
 
             textbox = m.lane_textbox(lane)
             self.drawer.textarea(textbox, label, fill=self.fill,
-                                 font=self.font,
-                                 fontsize=self.metrics.fontsize)
+                                 fontsize=lane.fontsize)
 
         super(DiagramDraw, self)._draw_elements(**kwargs)
 
