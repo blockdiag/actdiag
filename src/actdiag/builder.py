@@ -99,6 +99,10 @@ class DiagramTreeBuilder:
                 else:
                     self.diagram.set_attributes(stmt.attrs)
 
+            elif isinstance(stmt, diagparser.AttrClass):
+                name = unquote(stmt.name)
+                Diagram.classes[name] = stmt
+
             else:
                 raise AttributeError("Unknown sentense: " + str(type(stmt)))
 
