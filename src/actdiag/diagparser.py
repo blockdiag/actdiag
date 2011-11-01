@@ -54,6 +54,7 @@ Node = namedtuple('Node', 'id attrs')
 Attr = namedtuple('Attr', 'name value')
 Edge = namedtuple('Edge', 'nodes attrs')
 DefAttrs = namedtuple('DefAttrs', 'object attrs')
+AttrClass = namedtuple('AttrClass', 'name attrs')
 
 
 class ParseException(Exception):
@@ -134,8 +135,14 @@ def parse(seq):
         lane_stmt_list +
         op_('}')
         >> unarg(Lane))
+    class_stmt = (
+        skip(n('class')) +
+        node_id +
+        attr_list
+        >> unarg(AttrClass))
     stmt = (
           attr_stmt
+        | class_stmt
         | edge_stmt
         | lane_stmt
         | graph_attr
