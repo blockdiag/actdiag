@@ -1,0 +1,8 @@
+include buildout.cfg
+include bootstrap.py
+include MANIFEST.in
+include LICENSE
+include actdiag.1
+recursive-include examples *.diag
+recursive-include src *.py *.txt
+
