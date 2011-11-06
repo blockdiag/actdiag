@@ -30,7 +30,7 @@ setup(
      author_email='i.tkomiya at gmail.com',
      url='http://blockdiag.com/',
      license='Apache License 2.0',
-     py_modules=['sphinxcontrib_actdiag', 'actdiag_sphinxhelper'],
+     py_modules=['actdiag_sphinxhelper'],
      packages=find_packages('src'),
      package_dir={'': 'src'},
      package_data = {'': ['buildout.cfg']},
@@ -38,7 +38,7 @@ setup(
      install_requires=[
         'setuptools',
         'PIL',
-        'blockdiag>=0.9.5',
+        'blockdiag>=1.0.1',
         'funcparserlib',
          # -*- Extra requirements: -*-
      ],
