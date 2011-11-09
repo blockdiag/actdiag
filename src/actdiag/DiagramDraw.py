@@ -14,14 +14,11 @@
 #  limitations under the License.
 
 import blockdiag.DiagramDraw
-from blockdiag.utils import XY
 
 
 class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
     def _draw_elements(self, **kwargs):
         m = self.metrics
-        pagesize = self.pagesize()
-        margin = m.page_margin
 
         # render frame of activity lanes
         frame = m.frame(self.diagram.lanes)
