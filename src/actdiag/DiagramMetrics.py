@@ -51,9 +51,6 @@ class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
         dummy.colheight = self.colheight
         cell = self.cell(dummy, use_padding=False)
 
-        pagesize = self.pagesize()
-        margin = self.page_margin
-
         headerbox = (cell.topleft.x - self.span_width / 2,
                      cell.topleft.y - self.node_height - self.span_height - 2,
                      cell.topright.x + self.span_width / 2,

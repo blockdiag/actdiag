@@ -154,8 +154,6 @@ class DiagramLayoutManager:
         self.adjust_node_order()
 
         height = 0
-        nodes_iter = self.diagram.traverse_nodes()
-        toplevel_nodes = [x for x in nodes_iter if x.xy.x == 0]
         self.initialize_markers()
         for node in self.diagram.traverse_nodes():
             if node.xy.x == 0:
