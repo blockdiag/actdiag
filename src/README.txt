@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.2.4 (2011-11-10)
+------------------
+* Fix dependencies (do not depend PIL directly for pillow users)
+
 0.2.3 (2011-11-06)
 ------------------
 * Add docutils exetension
