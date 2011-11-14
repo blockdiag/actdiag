@@ -50,6 +50,7 @@ Node = namedtuple('Node', 'id attrs')
 Attr = namedtuple('Attr', 'name value')
 Edge = namedtuple('Edge', 'nodes attrs')
 DefAttrs = namedtuple('DefAttrs', 'object attrs')
+AttrPlugin = namedtuple('AttrPlugin', 'name attrs')
 AttrClass = namedtuple('AttrClass', 'name attrs')
 
 
@@ -131,8 +132,14 @@ def parse(seq):
         node_id +
         attr_list
         >> unarg(AttrClass))
+    plugin_stmt = (
+        skip(n('plugin')) +
+        node_id +
+        attr_list
+        >> unarg(AttrPlugin))
     stmt = (
           class_stmt
+        | plugin_stmt
         | edge_stmt
         | lane_stmt
         | graph_attr
