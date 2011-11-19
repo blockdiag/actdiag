@@ -39,7 +39,7 @@ class DiagramDraw(blockdiag.DiagramDraw.DiagramDraw):
 
             textbox = m.lane_textbox(lane)
             self.drawer.textarea(textbox, label, fill=self.fill,
-                                 fontsize=self.metrics.fontsize_for(lane))
+                                 font=self.metrics.font_for(lane))
 
         super(DiagramDraw, self)._draw_elements(**kwargs)
 
