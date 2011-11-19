@@ -21,7 +21,7 @@ from optparse import OptionParser
 import actdiag
 import DiagramDraw
 import diagparser
-from blockdiag.command import detectfont
+from blockdiag.command import create_fontmap, detectfont
 from builder import ScreenNodeBuilder
 
 
@@ -37,10 +37,14 @@ def parse_option():
                  help='write diagram to FILE', metavar='FILE')
     p.add_option('-f', '--font', default=[], action='append',
                  help='use FONT to draw diagram', metavar='FONT')
+    p.add_option('--fontmap',
+                 help='use FONTMAP file to draw diagram', metavar='FONT')
     p.add_option('-s', '--separate', action='store_true',
                  help='Separate diagram images for each group (SVG only)')
     p.add_option('-T', dest='type', default='PNG',
                  help='Output diagram as TYPE format')
+    p.add_option('--nodoctype', action='store_true',
+                 help='Do not output doctype definition tags (SVG only)')
     options, args = p.parse_args()
 
     if len(args) == 0:
@@ -94,8 +98,6 @@ def main():
     else:
         outfile = re.sub('\..*', '', infile) + '.' + options.type.lower()
 
-    fontpath = detectfont(options)
-
     try:
         if infile == '-':
             import codecs
@@ -104,11 +106,12 @@ def main():
         else:
             tree = diagparser.parse_file(infile)
 
+        fontmap = create_fontmap(options)
         diagram = ScreenNodeBuilder.build(tree, separate=options.separate)
-
         draw = DiagramDraw.DiagramDraw(options.type, diagram, outfile,
-                                       font=fontpath,
-                                       antialias=options.antialias)
+                                       fontmap=fontmap,
+                                       antialias=options.antialias,
+                                       nodoctype=options.nodoctype)
         draw.draw()
         draw.save()
     except UnicodeEncodeError, e:
