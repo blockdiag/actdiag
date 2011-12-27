@@ -15,5 +15,7 @@
 
 from blockdiag.utils import collections
 from blockdiag.utils.fontmap import FontMap
-from actdiag import command, diagparser, builder, DiagramDraw
+from actdiag import command, parser, builder, drawer
+from actdiag import parser as diagparser
+from actdiag import drawer as DiagramDraw
 from actdiag.utils.rst.directives import actdiag, ActdiagDirective
