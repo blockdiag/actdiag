@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 from elements import *
-import diagparser
+import parser
 from blockdiag.utils import XY
 
 
@@ -59,12 +59,12 @@ class DiagramTreeBuilder:
 
     def instantiate(self, group, tree, lane=None):
         for stmt in tree.stmts:
-            if isinstance(stmt, diagparser.Node):
+            if isinstance(stmt, parser.Node):
                 node = DiagramNode.get(stmt.id)
                 node.set_attributes(stmt.attrs)
                 self.belong_to(node, lane)
 
-            elif isinstance(stmt, diagparser.Edge):
+            elif isinstance(stmt, parser.Edge):
                 nodes = stmt.nodes.pop(0)
                 edge_from = [DiagramNode.get(n) for n in nodes]
                 for node in edge_from:
@@ -80,30 +80,30 @@ class DiagramTreeBuilder:
                         for node2 in edge_to:
                             edge = DiagramEdge.get(node1, node2)
                             if edge_type:
-                                attrs = [diagparser.Attr('dir', edge_type)]
+                                attrs = [parser.Attr('dir', edge_type)]
                                 edge.set_attributes(attrs)
                             edge.set_attributes(stmt.attrs)
 
                     edge_from = edge_to
 
-            elif isinstance(stmt, diagparser.Lane):
+            elif isinstance(stmt, parser.Lane):
                 _lane = NodeGroup.get(stmt.id)
                 if _lane not in self.diagram.lanes:
                     self.diagram.lanes.append(_lane)
 
                 self.instantiate(group, stmt, _lane)
 
-            elif isinstance(stmt, diagparser.DefAttrs):
+            elif isinstance(stmt, parser.DefAttrs):
                 if lane:
                     lane.set_attributes(stmt.attrs)
                 else:
                     self.diagram.set_attributes(stmt.attrs)
 
-            elif isinstance(stmt, diagparser.AttrClass):
+            elif isinstance(stmt, parser.AttrClass):
                 name = unquote(stmt.name)
                 Diagram.classes[name] = stmt
 
-            elif isinstance(stmt, diagparser.AttrPlugin):
+            elif isinstance(stmt, parser.AttrPlugin):
                 self.diagram.set_plugin(stmt.name, stmt.attrs)
 
         group.update_order()
