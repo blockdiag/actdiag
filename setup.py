@@ -52,6 +52,9 @@ setup(
      entry_points="""
         [console_scripts]
         actdiag = actdiag.command:main
+
+        [blockdiag_plugins]
+        autolane = actdiag.plugins.autolane
      """,
 )
 
