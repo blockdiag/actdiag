@@ -56,6 +56,7 @@ class DiagramTreeBuilder:
         node.group = self.diagram
         if lane:
             node.lane = lane
+            lane.nodes.append(node)
 
         if node not in self.diagram.nodes:
             self.diagram.nodes.append(node)
