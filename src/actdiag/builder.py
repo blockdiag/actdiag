@@ -22,9 +22,6 @@ class DiagramTreeBuilder:
     def build(self, tree):
         self.diagram = Diagram()
         diagram = self.instantiate(self.diagram, tree)
-        for subgroup in diagram.traverse_groups():
-            if len(subgroup.nodes) == 0:
-                subgroup.group.nodes.remove(subgroup)
 
         self.bind_edges(diagram)
 
@@ -39,8 +36,14 @@ class DiagramTreeBuilder:
 
                 if parents:
                     node.lane = parents[0].lane
+                    node.lane.nodes.append(node)
                 else:
                     node.lane = self.diagram.lanes[0]
+                    node.lane.nodes.append(node)
+
+        for lane in diagram.lanes:
+            if len(lane.nodes) == 0:
+                diagram.lanes.remove(lane)
 
         return diagram
 
