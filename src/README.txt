@@ -77,6 +77,11 @@ Apache License 2.0
 History
 =======
 
+0.3.1 (2012-02-15)
+------------------
+* Add autolane plugin
+* Update to new package structure (blockdiag >= 1.1.2)
+
 0.3.0 (2011-11-19)
 ------------------
 * Add fontfamily attribute for switching fontface
