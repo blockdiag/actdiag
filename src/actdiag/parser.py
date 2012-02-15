@@ -114,6 +114,11 @@ def parse(seq):
         many(edge_rhs) +
         attr_list
         >> unarg(make_edge))
+    lane_declare_stmt = (
+        skip(n('lane')) +
+        node_id +
+        attr_list
+        >> unarg(Lane))
     lane_stmt = (
           edge_stmt
         | graph_attr
@@ -142,6 +147,7 @@ def parse(seq):
         | plugin_stmt
         | edge_stmt
         | lane_stmt
+        | lane_declare_stmt
         | graph_attr
         | node_stmt
     )

@@ -12,28 +12,3 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-import blockdiag.elements
-from blockdiag.elements import *
-
-
-class DiagramNode(blockdiag.elements.DiagramNode):
-    lane = None
-
-
-class NodeGroup(blockdiag.elements.NodeGroup):
-    def __init__(self, id):
-        super(NodeGroup, self).__init__(id)
-
-        self.color = 'none'
-
-
-class Diagram(blockdiag.elements.Diagram):
-    _DiagramNode = DiagramNode
-    _NodeGroup = NodeGroup
-
-    def __init__(self):
-        super(Diagram, self).__init__()
-
-        self.orientation = 'portrait'
-        self.lanes = []

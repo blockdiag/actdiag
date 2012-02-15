@@ -13,27 +13,22 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import blockdiag.elements
-from blockdiag.elements import *
+import re
+from blockdiag import plugins
 
 
-class DiagramNode(blockdiag.elements.DiagramNode):
-    lane = None
+class AutoLane(plugins.NodeHandler):
+    def on_created(self, node):
+        if node.id is None:
+            return
+
+        for lane in self.diagram.lanes:
+            pattern = "^%s_" % re.escape(lane.id)
+
+            if re.search(pattern, node.id) and node.lane is None:
+                node.label = re.sub(pattern, '', node.id)
+                node.lane = lane
 
 
-class NodeGroup(blockdiag.elements.NodeGroup):
-    def __init__(self, id):
-        super(NodeGroup, self).__init__(id)
-
-        self.color = 'none'
-
-
-class Diagram(blockdiag.elements.Diagram):
-    _DiagramNode = DiagramNode
-    _NodeGroup = NodeGroup
-
-    def __init__(self):
-        super(Diagram, self).__init__()
-
-        self.orientation = 'portrait'
-        self.lanes = []
+def setup(self, diagram, **kwargs):
+    plugins.install_node_handler(AutoLane(diagram, **kwargs))
