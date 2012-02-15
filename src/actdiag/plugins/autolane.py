@@ -28,6 +28,7 @@ class AutoLane(plugins.NodeHandler):
             if re.search(pattern, node.id) and node.lane is None:
                 node.label = re.sub(pattern, '', node.id)
                 node.lane = lane
+                lane.nodes.append(node)
 
 
 def setup(self, diagram, **kwargs):
