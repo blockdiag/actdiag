@@ -19,6 +19,9 @@ import actdiag.drawer
 import actdiag.parser
 from blockdiag.utils.bootstrap import Application
 
+# for compatibility
+from blockdiag.utils.bootstrap import create_fontmap, detectfont
+
 
 class ActdiagApp(Application):
     module = actdiag
