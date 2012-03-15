@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.3.2 (2012-03-15)
+------------------
+* Fix bugs
+
 0.3.1 (2012-02-15)
 ------------------
 * Add autolane plugin
