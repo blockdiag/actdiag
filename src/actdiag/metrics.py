@@ -82,3 +82,11 @@ class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
         x2 = m.right.x
 
         return (x1, headerbox[1], x2, headerbox[3])
+
+    def lane_headerbox(self, lane):
+        headerbox = self.frame([]).headerbox
+        m = self.cell(lane)
+        x1 = m.left.x - self.spreadsheet.span_width[lane.xy.x] / 2
+        x2 = m.right.x + self.spreadsheet.span_width[lane.xy.x + 1] / 2
+
+        return (x1, headerbox[1], x2, headerbox[3])

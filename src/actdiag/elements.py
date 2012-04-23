@@ -25,7 +25,7 @@ class NodeGroup(blockdiag.elements.NodeGroup):
     def __init__(self, id):
         super(NodeGroup, self).__init__(id)
 
-        self.color = 'none'
+        self.color = '#ffff99'
 
 
 class Diagram(blockdiag.elements.Diagram):
