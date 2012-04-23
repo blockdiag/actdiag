@@ -23,14 +23,6 @@ class DiagramDraw(blockdiag.drawer.DiagramDraw):
     def _draw_elements(self, **kwargs):
         m = self.metrics
 
-        # render frame of activity lanes
-        frame = m.frame(self.diagram.lanes)
-        color = "#ffff99"
-        self.drawer.rectangle(frame.headerbox, fill=color, outline=color)
-        self.drawer.rectangle(frame.outline, outline='gray')
-        for xy in frame.separators:
-            self.drawer.line(xy, fill='gray')
-
         # render label of lanes
         for i, lane in enumerate(self.diagram.lanes):
             if lane.label:
@@ -40,8 +32,17 @@ class DiagramDraw(blockdiag.drawer.DiagramDraw):
             else:
                 label = u'Lane %d' % (i + 1)
 
+            headerbox = m.lane_headerbox(lane)
+            self.drawer.rectangle(headerbox, fill=lane.color, outline=lane.color)
+
             textbox = m.lane_textbox(lane)
             self.drawer.textarea(textbox, label, fill=self.fill,
                                  font=self.metrics.font_for(lane))
+
+        # render frame of activity lanes
+        frame = m.frame(self.diagram.lanes)
+        self.drawer.rectangle(frame.outline, outline='gray')
+        for xy in frame.separators:
+            self.drawer.line(xy, fill='gray')
 
         super(DiagramDraw, self)._draw_elements(**kwargs)
