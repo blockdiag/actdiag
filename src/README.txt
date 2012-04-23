@@ -77,6 +77,11 @@ Apache License 2.0
 History
 =======
 
+0.3.3 (2012-04-23)
+------------------
+* Set hyperlinks to header of lanes on SVG image
+* Fill background of lane header with lane.color attribute
+
 0.3.2 (2012-03-15)
 ------------------
 * Fix bugs
