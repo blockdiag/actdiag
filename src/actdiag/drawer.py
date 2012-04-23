@@ -32,12 +32,17 @@ class DiagramDraw(blockdiag.drawer.DiagramDraw):
             else:
                 label = u'Lane %d' % (i + 1)
 
+            if lane.href and self.format == 'SVG':
+                drawer = self.drawer.anchor(lane.href)
+            else:
+                drawer = self.drawer
+
             headerbox = m.lane_headerbox(lane)
-            self.drawer.rectangle(headerbox, fill=lane.color, outline=lane.color)
+            drawer.rectangle(headerbox, fill=lane.color, outline=lane.color)
 
             textbox = m.lane_textbox(lane)
-            self.drawer.textarea(textbox, label, fill=self.fill,
-                                 font=self.metrics.font_for(lane))
+            drawer.textarea(textbox, label, fill=self.fill,
+                            font=self.metrics.font_for(lane))
 
         # render frame of activity lanes
         frame = m.frame(self.diagram.lanes)
