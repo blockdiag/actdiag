@@ -19,3 +19,6 @@ from actdiag import command, parser, builder, drawer
 from actdiag import parser as diagparser
 from actdiag import drawer as DiagramDraw
 from actdiag.utils.rst.directives import actdiag, ActdiagDirective
+
+(collections, FontMap, command, parser, builder, drawer,
+ diagparser, DiagramDraw, actdiag, ActdiagDirective)
