@@ -77,6 +77,10 @@ Apache License 2.0
 History
 =======
 
+0.3.4 (2012-09-29)
+------------------
+* Fix bugs
+
 0.3.3 (2012-04-23)
 ------------------
 * Set hyperlinks to header of lanes on SVG image
