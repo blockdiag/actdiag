@@ -13,13 +13,13 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import blockdiag.DiagramMetrics
+import blockdiag.metrics
 from blockdiag.utils import XY
 from blockdiag.utils.collections import namedtuple
 import elements
 
 
-class DiagramMetrics(blockdiag.DiagramMetrics.DiagramMetrics):
+class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
     def __init__(self, diagram, **kwargs):
         super(DiagramMetrics, self).__init__(diagram, **kwargs)
 
