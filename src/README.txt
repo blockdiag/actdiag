@@ -77,6 +77,12 @@ Apache License 2.0
 History
 =======
 
+0.4.0 (2012-10-22)
+------------------
+* Optimize algorithm for rendering shadow
+* Add options to docutils directive
+* Fix bugs
+
 0.3.4 (2012-09-29)
 ------------------
 * Fix bugs
