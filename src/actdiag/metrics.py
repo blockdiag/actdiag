@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.metrics
-from blockdiag.utils import XY
+from blockdiag.utils import Box, XY
 from blockdiag.utils.collections import namedtuple
 import elements
 
@@ -81,7 +81,7 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
         x1 = m.left.x
         x2 = m.right.x
 
-        return (x1, headerbox[1], x2, headerbox[3])
+        return Box(x1, headerbox[1], x2, headerbox[3])
 
     def lane_headerbox(self, lane):
         headerbox = self.frame([]).headerbox
@@ -89,4 +89,4 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
         x1 = m.left.x - self.spreadsheet.span_width[lane.xy.x] / 2
         x2 = m.right.x + self.spreadsheet.span_width[lane.xy.x + 1] / 2
 
-        return (x1, headerbox[1], x2, headerbox[3])
+        return Box(x1, headerbox[1], x2, headerbox[3])
