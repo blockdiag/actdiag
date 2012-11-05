@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.drawer
-from metrics import DiagramMetrics
+from actdiag.metrics import DiagramMetrics
 
 
 class DiagramDraw(blockdiag.drawer.DiagramDraw):
