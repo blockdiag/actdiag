@@ -356,12 +356,12 @@ class ScreenNodeBuilder(object):
         diagram.fixiate(True)
 
         if diagram.orientation == 'portrait':
-            klass.rotate_diagram(diagram)
+            cls.rotate_diagram(diagram)
 
         return diagram
 
     @classmethod
-    def rotate_diagram(klass, diagram):
+    def rotate_diagram(cls, diagram):
         for node in diagram.traverse_nodes():
             node.xy = XY(node.xy.y, node.xy.x)
             node.colwidth, node.colheight = (node.colheight, node.colwidth)
