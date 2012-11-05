@@ -14,7 +14,8 @@
 #  limitations under the License.
 
 from actdiag import parser
-from actdiag.elements import Diagram, DiagramNode, DiagramEdge, NodeGroup, unquote
+from actdiag.elements import (Diagram, DiagramNode, DiagramEdge,
+                              NodeGroup, unquote)
 from blockdiag.utils import XY
 
 
