@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.elements
-from blockdiag.elements import *
+from blockdiag.elements import DiagramEdge, unquote
 
 
 class DiagramNode(blockdiag.elements.DiagramNode):
@@ -22,8 +22,8 @@ class DiagramNode(blockdiag.elements.DiagramNode):
 
 
 class NodeGroup(blockdiag.elements.NodeGroup):
-    def __init__(self, id):
-        super(NodeGroup, self).__init__(id)
+    def __init__(self, _id):
+        super(NodeGroup, self).__init__(_id)
 
         self.color = '#ffff99'
 

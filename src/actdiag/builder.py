@@ -13,12 +13,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from elements import *
-import parser
+from actdiag import parser
+from actdiag.elements import Diagram, DiagramNode, DiagramEdge, NodeGroup, unquote
 from blockdiag.utils import XY
 
 
-class DiagramTreeBuilder:
+class DiagramTreeBuilder(object):
     def build(self, tree):
         self.diagram = Diagram()
         diagram = self.instantiate(self.diagram, tree)
@@ -344,9 +344,9 @@ class DiagramLayoutManager:
         return True
 
 
-class ScreenNodeBuilder:
+class ScreenNodeBuilder(object):
     @classmethod
-    def build(klass, tree, separate=False):
+    def build(cls, tree, separate=False):
         DiagramNode.clear()
         DiagramEdge.clear()
         NodeGroup.clear()
