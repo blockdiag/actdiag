@@ -51,13 +51,14 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
         dummy.colheight = self.colheight
         cell = self.cell(dummy, use_padding=False)
 
-        headerbox = (cell.topleft.x - self.span_width / 2,
-                     cell.topleft.y - self.node_height - self.span_height - 2,
-                     cell.topright.x + self.span_width / 2,
-                     cell.topright.y - self.span_height / 2)
+        headerbox = Box(cell.topleft.x - self.span_width / 2,
+                        (cell.topleft.y - self.node_height -
+                         self.span_height - 2),
+                        cell.topright.x + self.span_width / 2,
+                        cell.topright.y - self.span_height / 2)
 
-        outline = (headerbox[0], headerbox[1], headerbox[2],
-                   cell.bottom.y + self.span_height / 2)
+        outline = Box(headerbox[0], headerbox[1], headerbox[2],
+                      cell.bottom.y + self.span_height / 2)
 
         separators = [(XY(headerbox[0], headerbox[3]),
                        XY(headerbox[2], headerbox[3]))]
