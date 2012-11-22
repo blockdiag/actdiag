@@ -18,7 +18,8 @@ from actdiag.metrics import DiagramMetrics
 
 
 class DiagramDraw(blockdiag.drawer.DiagramDraw):
-    MetricsClass = DiagramMetrics
+    def create_metrics(self, *args, **kwargs):
+        return DiagramMetrics(*args, **kwargs)
 
     def _draw_elements(self, **kwargs):
         m = self.metrics
