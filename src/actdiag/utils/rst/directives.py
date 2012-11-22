@@ -19,6 +19,7 @@ from docutils.parsers import rst
 from actdiag import parser
 from actdiag.builder import ScreenNodeBuilder
 from actdiag.drawer import DiagramDraw
+from actdiag.utils.rst.nodes import actdiag
 from blockdiag.utils.rst import directives
 
 
@@ -31,10 +32,6 @@ directive_options_default = dict(format='PNG',
                                  inline_svg=False,
                                  ignore_pil=False)
 directive_options = {}
-
-
-class actdiag(nodes.General, nodes.Element):
-    pass
 
 
 class ActdiagDirectiveBase(directives.BlockdiagDirectiveBase):
