@@ -13,6 +13,22 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import actdiag.parser
+import actdiag.builder
+import actdiag.drawer
+core = actdiag
+
+import blockdiag.utils.bootstrap
+import blockdiag.utils.collections
+import blockdiag.utils.fontmap
+utils = blockdiag.utils
+
+from actdiag.utils.rst import nodes
+from actdiag.utils.rst import directives
+
+# FIXME: obsoleted interface (keep for compatibility)
+(command, parser, builder, drawer, collections,
+ FontMap, blockdiag, BlockdiagDirective)
 from blockdiag.utils import collections
 from blockdiag.utils.fontmap import FontMap
 from actdiag import command, parser, builder, drawer
