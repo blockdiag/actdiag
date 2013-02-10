@@ -27,8 +27,6 @@ from actdiag.utils.rst import nodes
 from actdiag.utils.rst import directives
 
 # FIXME: obsoleted interface (keep for compatibility)
-(command, parser, builder, drawer, collections,
- FontMap, blockdiag, BlockdiagDirective)
 from blockdiag.utils import collections
 from blockdiag.utils.fontmap import FontMap
 from actdiag import command, parser, builder, drawer
