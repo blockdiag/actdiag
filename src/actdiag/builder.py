@@ -13,6 +13,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from __future__ import print_function
 from actdiag import parser
 from actdiag.elements import (Diagram, DiagramNode, DiagramEdge, NodeGroup)
 from blockdiag.utils import unquote, XY
@@ -50,7 +51,7 @@ class DiagramTreeBuilder(object):
 
     def belong_to(self, node, lane):
         if lane and node.lane and node.lane != lane:
-            print node, node.lane, lane
+            print(node, node.lane, lane)
             msg = "DiagramNode could not belong to two lanes"
             raise RuntimeError(msg)
 
