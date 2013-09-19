@@ -16,6 +16,7 @@
 from actdiag import parser
 from actdiag.elements import (Diagram, DiagramNode, DiagramEdge, NodeGroup)
 from blockdiag.utils import unquote, XY
+from functools import cmp_to_key
 
 
 class DiagramTreeBuilder(object):
@@ -32,7 +33,7 @@ class DiagramTreeBuilder(object):
             if node.lane is None:
                 edges = DiagramEdge.find(None, node)
                 parents = [e.node1 for e in edges if e.node1.lane]
-                parents.sort(lambda x, y: cmp(x.order, y.order))
+                parents.sort(key=lambda x: x.order)
 
                 if parents:
                     node.lane = parents[0].lane
@@ -186,7 +187,7 @@ class DiagramLayoutManager:
             else:
                 related.append(uniq_node)
 
-        related.sort(lambda x, y: cmp(x.order, y.order))
+        related.sort(key=lambda x: x.order)
         return related
 
     def get_parent_nodes(self, node):
@@ -226,7 +227,7 @@ class DiagramLayoutManager:
                         if not parent in circular:
                             parents.append(parent)
 
-                parents.sort(lambda x, y: cmp(x.order, y.order))
+                parents.sort(key=lambda x: x.order)
 
                 for parent in parents:
                     children = self.get_child_nodes(parent)
@@ -308,9 +309,17 @@ class DiagramLayoutManager:
         node.xy = xy
         self.mark_xy(node)
 
+        def cmp(x, y):
+            if x.xy.x < y.xy.y:
+                return -1
+            elif x.xy.x == y.xy.y:
+                return 0
+            else:
+                return 1
+
         count = 0
         children = self.get_child_nodes(node)
-        children.sort(lambda x, y: cmp(x.xy.x, y.xy.y))
+        children.sort(key=cmp_to_key(cmp))
         for child in children:
             if child.id in self.heightRefs:
                 pass
