@@ -58,7 +58,7 @@ class ParseException(Exception):
 
 
 def tokenize(string):
-    'str -> Sequence(Token)'
+    """str -> Sequence(Token)"""
     specs = [
         ('Comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('Comment', (r'(//|#).*',)),
@@ -76,7 +76,7 @@ def tokenize(string):
 
 
 def parse(seq):
-    'Sequence(Token) -> object'
+    """Sequence(Token) -> object"""
     unarg = lambda f: lambda args: f(*args)
     tokval = lambda x: x.value
     flatten = lambda list: sum(list, [])
