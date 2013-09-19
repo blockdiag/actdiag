@@ -13,6 +13,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from __future__ import division
 import blockdiag.metrics
 from blockdiag.utils import Box, XY
 from blockdiag.utils.collections import namedtuple
@@ -51,14 +52,14 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
         dummy.colheight = self.colheight
         cell = self.cell(dummy, use_padding=False)
 
-        headerbox = Box(cell.topleft.x - self.span_width / 2,
+        headerbox = Box(cell.topleft.x - self.span_width // 2,
                         (cell.topleft.y - self.node_height -
                          self.span_height - 2),
-                        cell.topright.x + self.span_width / 2,
-                        cell.topright.y - self.span_height / 2)
+                        cell.topright.x + self.span_width // 2,
+                        cell.topright.y - self.span_height // 2)
 
         outline = Box(headerbox[0], headerbox[1], headerbox[2],
-                      cell.bottom.y + self.span_height / 2)
+                      cell.bottom.y + self.span_height // 2)
 
         separators = [(XY(headerbox[0], headerbox[3]),
                        XY(headerbox[2], headerbox[3]))]
@@ -67,7 +68,7 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
             x = lane.xy.x + lane.colwidth + 1
 
             m = self.cell(lane, use_padding=False)
-            span_width = self.spreadsheet.span_width[x] / 2
+            span_width = self.spreadsheet.span_width[x] // 2
             x1 = m.right.x + span_width
 
             xy = (XY(x1, outline[1]), XY(x1, outline[3]))
@@ -87,7 +88,7 @@ class DiagramMetrics(blockdiag.metrics.DiagramMetrics):
     def lane_headerbox(self, lane):
         headerbox = self.frame([]).headerbox
         m = self.cell(lane)
-        x1 = m.left.x - self.spreadsheet.span_width[lane.xy.x] / 2
-        x2 = m.right.x + self.spreadsheet.span_width[lane.xy.x + 1] / 2
+        x1 = m.left.x - self.spreadsheet.span_width[lane.xy.x] // 2
+        x2 = m.right.x + self.spreadsheet.span_width[lane.xy.x + 1] // 2
 
         return Box(x1, headerbox[1], x2, headerbox[3])
