@@ -15,6 +15,8 @@
 
 import blockdiag.drawer
 from actdiag.metrics import DiagramMetrics
+from blockdiag.utils.compat import u
+
 import sys
 if sys.version_info[0] == 2:
     unicode_type = unicode
@@ -36,7 +38,7 @@ class DiagramDraw(blockdiag.drawer.DiagramDraw):
             elif isinstance(lane.id, unicode_type):
                 label = lane.id
             else:
-                label = u'Lane %d' % (i + 1)
+                label = u('Lane %d') % (i + 1)
 
             if lane.href and self.format == 'SVG':
                 drawer = self.drawer.anchor(lane.href)
