@@ -14,9 +14,9 @@
 #  limitations under the License.
 
 from __future__ import division
+from collections import namedtuple
 import blockdiag.metrics
 from blockdiag.utils import Box, XY
-from blockdiag.utils.collections import namedtuple
 from actdiag import elements
 
 

@@ -17,7 +17,7 @@ from __future__ import print_function
 from actdiag import parser
 from actdiag.elements import (Diagram, DiagramNode, DiagramEdge, NodeGroup)
 from blockdiag.utils import unquote, XY
-from functools import cmp_to_key
+from blockdiag.utils.compat import cmp_to_key
 
 
 class DiagramTreeBuilder(object):
