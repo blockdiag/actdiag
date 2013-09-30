@@ -14,11 +14,14 @@
 #  limitations under the License.
 
 import blockdiag.elements
-from blockdiag.elements import DiagramEdge
 
 
 class DiagramNode(blockdiag.elements.DiagramNode):
     lane = None
+
+
+class DiagramEdge(blockdiag.elements.DiagramEdge):
+    pass
 
 
 class NodeGroup(blockdiag.elements.NodeGroup):
