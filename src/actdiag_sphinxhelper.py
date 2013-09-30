@@ -33,4 +33,4 @@ from actdiag import command, parser, builder, drawer
 from actdiag.utils.rst.directives import actdiag, ActdiagDirective
 
 (collections, FontMap, command, parser, builder, drawer,
- actdiag, ActdiagDirective)
+ nodes, directives, actdiag, ActdiagDirective)
