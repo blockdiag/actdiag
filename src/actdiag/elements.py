@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.elements
-from blockdiag.elements import DiagramEdge, unquote
+from blockdiag.elements import DiagramEdge
 
 
 class DiagramNode(blockdiag.elements.DiagramNode):
