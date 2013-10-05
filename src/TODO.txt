@@ -1,8 +1,0 @@
-Todos
-======
-
-Functionals
-------------
-
-Known Issues
--------------
