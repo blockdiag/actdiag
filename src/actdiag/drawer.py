@@ -15,13 +15,7 @@
 
 import blockdiag.drawer
 from actdiag.metrics import DiagramMetrics
-from blockdiag.utils.compat import u
-
-import sys
-if sys.version_info[0] == 2:
-    unicode_type = unicode
-else:
-    unicode_type = str
+from blockdiag.utils.compat import u, string_types
 
 
 class DiagramDraw(blockdiag.drawer.DiagramDraw):
@@ -35,7 +29,7 @@ class DiagramDraw(blockdiag.drawer.DiagramDraw):
         for i, lane in enumerate(self.diagram.lanes):
             if lane.label:
                 label = lane.label
-            elif isinstance(lane.id, unicode_type):
+            elif isinstance(lane.id, string_types):
                 label = lane.id
             else:
                 label = u('Lane %d') % (i + 1)
