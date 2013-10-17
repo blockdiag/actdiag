@@ -26,7 +26,7 @@ setup(
     name='actdiag',
     version=actdiag.__version__,
     description='actdiag generates activity-diagram image from text',
-    long_description=open("README.txt").read(),
+    long_description=open("README.rst").read(),
     classifiers=classifiers,
     keywords=['diagram', 'generator'],
     author='Takeshi Komiya',
