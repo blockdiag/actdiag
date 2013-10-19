@@ -4,5 +4,5 @@ include MANIFEST.in
 include README.rst
 include LICENSE
 include actdiag.1
-recursive-include examples *.diag
-recursive-include src *.py *.diag
+include tox.ini
+recursive-include src *.py *.diag *.gif
