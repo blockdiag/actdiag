@@ -13,6 +13,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import sys
 import actdiag
 import actdiag.builder
 import actdiag.drawer
@@ -24,5 +25,5 @@ class ActdiagApp(Application):
     module = actdiag
 
 
-def main():
-    return ActdiagApp().run()
+def main(args=sys.argv[1:]):
+    return ActdiagApp().run(args)
