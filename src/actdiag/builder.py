@@ -71,26 +71,17 @@ class DiagramTreeBuilder(object):
                 self.belong_to(node, lane)
 
             elif isinstance(stmt, parser.Edge):
-                nodes = stmt.nodes.pop(0)
-                edge_from = [DiagramNode.get(n) for n in nodes]
-                for node in edge_from:
+                from_nodes = [DiagramNode.get(n) for n in stmt.from_nodes]
+                to_nodes = [DiagramNode.get(n) for n in stmt.to_nodes]
+
+                for node in from_nodes + to_nodes:
                     self.belong_to(node, lane)
 
-                while len(stmt.nodes):
-                    edge_type, edge_to = stmt.nodes.pop(0)
-                    edge_to = [DiagramNode.get(n) for n in edge_to]
-                    for node in edge_to:
-                        self.belong_to(node, lane)
-
-                    for node1 in edge_from:
-                        for node2 in edge_to:
-                            edge = DiagramEdge.get(node1, node2)
-                            if edge_type:
-                                attrs = [parser.Attr('dir', edge_type)]
-                                edge.set_attributes(attrs)
-                            edge.set_attributes(stmt.attrs)
-
-                    edge_from = edge_to
+                for node1 in from_nodes:
+                    for node2 in to_nodes:
+                        edge = DiagramEdge.get(node1, node2)
+                        edge.set_dir(stmt.edge_type)
+                        edge.set_attributes(stmt.attrs)
 
             elif isinstance(stmt, parser.Lane):
                 _lane = NodeGroup.get(stmt.id)
@@ -99,18 +90,21 @@ class DiagramTreeBuilder(object):
 
                 self.instantiate(group, stmt, _lane)
 
-            elif isinstance(stmt, parser.DefAttrs):
+            elif isinstance(stmt, parser.Attr):
                 if lane:
-                    lane.set_attributes(stmt.attrs)
+                    lane.set_attribute(stmt)
                 else:
-                    self.diagram.set_attributes(stmt.attrs)
+                    self.diagram.set_attribute(stmt)
 
-            elif isinstance(stmt, parser.AttrClass):
-                name = unquote(stmt.name)
-                Diagram.classes[name] = stmt
+            elif isinstance(stmt, parser.Extension):
+                if stmt.type == 'class':
+                    name = unquote(stmt.name)
+                    Diagram.classes[name] = stmt
+                if stmt.type == 'plugin':
+                    self.diagram.set_plugin(stmt.name, stmt.attrs)
 
-            elif isinstance(stmt, parser.AttrPlugin):
-                self.diagram.set_plugin(stmt.name, stmt.attrs)
+            elif isinstance(stmt, parser.Statements):
+                self.instantiate(group, stmt, lane)
 
         group.update_order()
         return group

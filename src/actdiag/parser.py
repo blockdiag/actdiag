@@ -40,18 +40,17 @@ from re import MULTILINE, DOTALL
 from collections import namedtuple
 from funcparserlib.lexer import make_tokenizer, Token, LexerError
 from funcparserlib.parser import (some, a, maybe, many, finished, skip)
+from blockdiag.parser import create_mapper, oneplus_to_list
 from blockdiag.utils.compat import u
 
-ENCODING = 'utf-8'
 
-Graph = namedtuple('Graph', 'type id stmts')
+Diagram = namedtuple('Diagram', 'type id stmts')
 Lane = namedtuple('Lane', 'id stmts')
 Node = namedtuple('Node', 'id attrs')
 Attr = namedtuple('Attr', 'name value')
-Edge = namedtuple('Edge', 'nodes attrs')
-DefAttrs = namedtuple('DefAttrs', 'object attrs')
-AttrPlugin = namedtuple('AttrPlugin', 'name attrs')
-AttrClass = namedtuple('AttrClass', 'name attrs')
+Edge = namedtuple('Edge', 'from_nodes edge_type to_nodes attrs')
+Extension = namedtuple('Extension', 'type name attrs')
+Statements = namedtuple('Statements', 'stmts')
 
 
 class ParseException(Exception):
@@ -79,95 +78,151 @@ def tokenize(string):
 
 def parse(seq):
     """Sequence(Token) -> object"""
-    unarg = lambda f: lambda args: f(*args)
     tokval = lambda x: x.value
-    flatten = lambda list: sum(list, [])
-    node_flatten = lambda l: sum([[l[0]]] + list(l[1:]), [])
-    n = lambda s: a(Token('Name', s)) >> tokval
     op = lambda s: a(Token('Op', s)) >> tokval
     op_ = lambda s: skip(op(s))
-    _id = some(lambda t:
-               t.type in ['Name', 'Number', 'String']).named('id') >> tokval
-    make_graph_attr = lambda args: DefAttrs(u('graph'), [Attr(*args)])
-    make_edge = lambda x, x2, xs, attrs: Edge([x, x2] + xs, attrs)
+    _id = some(lambda t: t.type in ['Name', 'Number', 'String']) >> tokval
+    keyword = lambda s: a(Token('Name', s)) >> tokval
 
-    node_id = _id  # + maybe(port)
+    def make_node_list(node_list, attrs):
+        return Statements([Node(node, attrs) for node in node_list])
+
+    def make_edge(first, edge_type, second, followers, attrs):
+        edges = [Edge(first, edge_type, second, attrs)]
+
+        from_node = second
+        for edge_type, to_node in followers:
+            edges.append(Edge(from_node, edge_type, to_node, attrs))
+            from_node = to_node
+
+        return Statements(edges)
+
+    #
+    # parts of syntax
+    #
     node_list = (
-        node_id +
-        many(op_(',') + node_id)
-        >> node_flatten)
-    a_list = (
         _id +
-        maybe(op_('=') + _id) +
-        skip(maybe(op(',')))
-        >> unarg(Attr))
-    attr_list = (
-        many(op_('[') + many(a_list) + op_(']'))
-        >> flatten)
-    graph_attr = _id + op_('=') + _id >> make_graph_attr
-    node_stmt = node_id + attr_list >> unarg(Node)
-    # We use a forward_decl becaue of circular definitions like (stmt_list ->
-    # stmt -> subgraph -> stmt_list)
-    edge_rhs = (op('->') | op('--') | op('<-') | op('<->')) + node_list
+        many(op_(',') + _id)
+        >> create_mapper(oneplus_to_list)
+    )
+    option_stmt = (
+        _id +
+        maybe(op_('=') + _id)
+        >> create_mapper(Attr)
+    )
+    option_list = (
+        maybe(op_('[') + option_stmt + many(op_(',') + option_stmt) + op_(']'))
+        >> create_mapper(oneplus_to_list, default_value=[])
+    )
+
+    #  node (node list) statement::
+    #     A;
+    #     B [attr = value, attr = value];
+    #     C, D [attr = value, attr = value];
+    #
+    node_stmt = (
+        node_list + option_list
+        >> create_mapper(make_node_list)
+    )
+
+    #  edge statement::
+    #     A -> B;
+    #     A <- B;
+    #
+    edge_relation = (
+        op('->') | op('--') | op('<-') | op('<->')
+    )
     edge_stmt = (
         node_list +
-        edge_rhs +
-        many(edge_rhs) +
-        attr_list
-        >> unarg(make_edge))
+        edge_relation +
+        node_list +
+        many(edge_relation + node_list) +
+        option_list
+        >> create_mapper(make_edge)
+    )
+
+    #  attributes statement::
+    #     default_shape = box;
+    #     default_fontsize = 16;
+    #
+    attribute_stmt = (
+        _id + op_('=') + _id
+        >> create_mapper(Attr)
+    )
+
+    #  extension statement (class, plugin)::
+    #     class red [color = red];
+    #     plugin attributes [name = Name];
+    #
+    extension_stmt = (
+        (keyword('class') | keyword('plugin')) +
+        _id +
+        option_list
+        >> create_mapper(Extension)
+    )
+
+    #  lane statement::
+    #     lane A [color = red];
+    #     lane {
+    #        A;
+    #     }
+    #
     lane_declare_stmt = (
-        skip(n('lane')) +
-        node_id +
-        attr_list
-        >> unarg(Lane))
-    lane_stmt = (
-        edge_stmt
-        | graph_attr
-        | node_stmt
+        skip(keyword('lane')) +
+        _id +
+        option_list
+        >> create_mapper(Lane)
     )
-    lane_stmt_list = many(lane_stmt + skip(maybe(op(';'))))
+    lane_inline_stmt = (
+        edge_stmt |
+        attribute_stmt |
+        node_stmt
+    )
+    lane_inline_stmt_list = (
+        many(lane_inline_stmt + skip(maybe(op(';'))))
+    )
     lane_stmt = (
-        skip(n('lane')) +
+        skip(keyword('lane')) +
         maybe(_id) +
         op_('{') +
-        lane_stmt_list +
+        lane_inline_stmt_list +
         op_('}')
-        >> unarg(Lane))
-    class_stmt = (
-        skip(n('class')) +
-        node_id +
-        attr_list
-        >> unarg(AttrClass))
-    plugin_stmt = (
-        skip(n('plugin')) +
-        node_id +
-        attr_list
-        >> unarg(AttrPlugin))
-    stmt = (
-        class_stmt
-        | plugin_stmt
-        | edge_stmt
-        | lane_stmt
-        | lane_declare_stmt
-        | graph_attr
-        | node_stmt
+        >> create_mapper(Lane)
     )
-    stmt_list = many(stmt + skip(maybe(op(';'))))
-    graph = (
-        maybe(n('diagram') | n('actdiag')) +
+
+    #
+    # diagram statement::
+    #     actdiag {
+    #        A;
+    #     }
+    #
+    diagram_inline_stmt = (
+        extension_stmt |
+        edge_stmt |
+        lane_stmt |
+        lane_declare_stmt |
+        attribute_stmt |
+        node_stmt
+    )
+    diagram_inline_stmt_list = (
+        many(diagram_inline_stmt + skip(maybe(op(';'))))
+    )
+    diagram = (
+        maybe(keyword('diagram') | keyword('actdiag')) +
         maybe(_id) +
         op_('{') +
-        stmt_list +
+        diagram_inline_stmt_list +
         op_('}')
-        >> unarg(Graph))
-    dotfile = graph + skip(finished)
+        >> create_mapper(Diagram)
+    )
+    dotfile = diagram + skip(finished)
 
     return dotfile.parse(seq)
 
 
 def sort_tree(tree):
     def weight(node):
-        if isinstance(node, (Attr, DefAttrs, AttrPlugin, AttrClass)):
+        if isinstance(node, (Attr, Extension)):
             return 1
         else:
             return 2
