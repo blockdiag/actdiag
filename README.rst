@@ -12,20 +12,14 @@ You can get some examples and generated images on
 Setup
 =====
 
-by easy_install
-----------------
-Make environment::
+Use easy_install or pip::
 
-   $ easy_install actdiag
+   $ sudo easy_install actdiag
 
-by buildout
-------------
-Make environment::
+   Or
 
-   $ hg clone http://bitbucket.org/tk0miya/actdiag
-   $ cd actdiag
-   $ python bootstrap.py
-   $ bin/buildout
+   $ sudo pip actdiag
+
 
 spec-text setting sample
 ========================
