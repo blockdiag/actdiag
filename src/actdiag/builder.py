@@ -219,7 +219,7 @@ class DiagramLayoutManager:
                 parents = []
                 for node in circular:
                     for parent in self.get_parent_nodes(node):
-                        if not parent in circular:
+                        if parent not in circular:
                             parents.append(parent)
 
                 parents.sort(key=lambda x: x.order)
