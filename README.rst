@@ -69,10 +69,11 @@ Execute actdiag command::
 
 Requirements
 ============
-
 * Python 2.6, 2.7, 3.2, 3.3, 3.4
-* Pillow 2.2.1
-* funcparserlib 0.3.6
+* Pillow 2.2.1 or later
+* funcparserlib 0.3.6 or later
+* reportlab (optional)
+* wand and imagemagick (optional)
 * setuptools
 
 
@@ -83,6 +84,18 @@ Apache License 2.0
 
 History
 =======
+
+0.5.2 (2014-06-24)
+------------------
+* Add options to blockdiag directive (docutils extension)
+   - :width:
+   - :height:
+   - :scale:
+   - :align:
+   - :name:
+   - :class:
+   - :figwidth:
+   - :figclass:
 
 0.5.1 (2013-10-22)
 ------------------
