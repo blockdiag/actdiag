@@ -9,7 +9,7 @@ else:
 import os
 from blockdiag.tests.utils import capture_stderr, with_pil, TemporaryDirectory
 from docutils import nodes
-from docutils.core import publish_doctree, publish_parts
+from docutils.core import publish_doctree
 from docutils.parsers.rst import directives as docutils
 from actdiag.utils.rst import directives
 
