@@ -39,7 +39,7 @@ spec-text setting sample
 
 Few examples are available.
 You can get more examples at
-`blockdiag.com <http://blockdiag.com/actdiag/build/html/index.html>`_ .
+`blockdiag.com`_ .
 
 simple.diag
 ------------
