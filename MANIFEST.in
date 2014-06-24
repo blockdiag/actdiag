@@ -6,3 +6,6 @@ include LICENSE
 include actdiag.1
 include tox.ini
 recursive-include src *.py *.diag *.gif
+
+exclude .drone.io.sh
+exclude examples/update.sh
