@@ -14,9 +14,6 @@
 #  limitations under the License.
 
 from docutils.parsers import rst
-import actdiag.parser
-import actdiag.builder
-import actdiag.drawer
 from actdiag.utils.rst.nodes import actdiag as actdiag_node
 from blockdiag.utils.rst import directives
 
@@ -34,7 +31,6 @@ directive_options = {}
 class ActdiagDirective(directives.BlockdiagDirective):
     name = "actdiag"
     node_class = actdiag_node
-    processor = actdiag
 
     @property
     def global_options(self):
