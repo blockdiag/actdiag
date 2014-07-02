@@ -85,6 +85,10 @@ Apache License 2.0
 History
 =======
 
+0.5.3 (2014-07-02)
+------------------
+* Change interface of docutils node (for sphinxcontrib module)
+
 0.5.2 (2014-06-24)
 ------------------
 * Add options to blockdiag directive (docutils extension)
