@@ -13,8 +13,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from docutils import nodes
+import actdiag.parser
+import actdiag.builder
+import actdiag.drawer
+from blockdiag.utils.rst import nodes
 
 
-class actdiag(nodes.General, nodes.Element):
-    pass
+class actdiag(nodes.blockdiag):
+    name = 'actdiag'
+    processor = actdiag
