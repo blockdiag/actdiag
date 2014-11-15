@@ -5,5 +5,5 @@ sudo apt-get install python2.6 python2.6-dev python3.4 python3.4-dev fonts-ipafo
 
 pip install --use-mirrors --upgrade detox misspellings check-manifest docutils
 find src/ -name "*.py" | misspellings -f -
-detox
+ALL_TESTS=1 detox
 check-manifest
