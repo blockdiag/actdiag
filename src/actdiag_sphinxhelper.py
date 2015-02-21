@@ -16,17 +16,14 @@
 import actdiag.parser
 import actdiag.builder
 import actdiag.drawer
-core = actdiag
-
 import actdiag.utils.rst.nodes
 import actdiag.utils.rst.directives
-utils = actdiag.utils
-
 import blockdiag.utils.bootstrap
-utils.bootstrap = blockdiag.utils.bootstrap
-
 import blockdiag.utils.compat
-utils.compat = blockdiag.utils.compat
-
 import blockdiag.utils.fontmap
+
+core = actdiag
+utils = actdiag.utils
+utils.bootstrap = blockdiag.utils.bootstrap
+utils.compat = blockdiag.utils.compat
 utils.fontmap = blockdiag.utils.fontmap
