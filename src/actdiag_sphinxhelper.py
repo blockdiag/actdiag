@@ -19,11 +19,9 @@ import actdiag.drawer
 import actdiag.utils.rst.nodes
 import actdiag.utils.rst.directives
 import blockdiag.utils.bootstrap
-import blockdiag.utils.compat
 import blockdiag.utils.fontmap
 
 core = actdiag
 utils = actdiag.utils
 utils.bootstrap = blockdiag.utils.bootstrap
-utils.compat = blockdiag.utils.compat
 utils.fontmap = blockdiag.utils.fontmap
