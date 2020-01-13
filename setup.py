@@ -19,13 +19,6 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
 ]
 
-requires = ['blockdiag>=1.5.0']
-test_requires = ['nose',
-                 'pep8>=1.3',
-                 'reportlab',
-                 'docutils']
-
-
 setup(
     name='actdiag',
     version=actdiag.__version__,
@@ -44,15 +37,22 @@ setup(
     package_data={'': ['buildout.cfg']},
     include_package_data=True,
     python_requires=">=3.5",
-    install_requires=requires,
+    install_requires=['blockdiag >= 1.5.0'],
     extras_require=dict(
-        testing=test_requires,
         rst=[
             'docutils',
         ],
+        testing=[
+            'nose',
+            'pep8 >=1.3',
+            'reportlab',
+            'docutils',
+            'flake8',
+            'flake8-coding',
+            'flake8-copyright',
+        ],
     ),
     test_suite='nose.collector',
-    tests_require=test_requires,
     entry_points="""
        [console_scripts]
        actdiag = actdiag.command:main
