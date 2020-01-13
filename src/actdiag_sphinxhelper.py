@@ -13,13 +13,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import actdiag.parser
-import actdiag.builder
-import actdiag.drawer
-import actdiag.utils.rst.nodes
-import actdiag.utils.rst.directives
 import blockdiag.utils.bootstrap
 import blockdiag.utils.fontmap
+
+import actdiag.builder
+import actdiag.drawer
+import actdiag.parser
+import actdiag.utils.rst.directives
+import actdiag.utils.rst.nodes
 
 core = actdiag
 utils = actdiag.utils

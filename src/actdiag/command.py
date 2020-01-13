@@ -14,11 +14,13 @@
 #  limitations under the License.
 
 import sys
+
+from blockdiag.utils.bootstrap import Application
+
 import actdiag
 import actdiag.builder
 import actdiag.drawer
 import actdiag.parser
-from blockdiag.utils.bootstrap import Application
 
 
 class ActdiagApp(Application):
