@@ -14,6 +14,7 @@
 #  limitations under the License.
 
 import blockdiag.drawer
+
 from actdiag.metrics import DiagramMetrics
 
 

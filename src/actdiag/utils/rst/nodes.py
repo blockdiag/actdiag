@@ -13,10 +13,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import actdiag.parser
+from blockdiag.utils.rst import nodes
+
 import actdiag.builder
 import actdiag.drawer
-from blockdiag.utils.rst import nodes
+import actdiag.parser
 
 
 class actdiag(nodes.blockdiag):

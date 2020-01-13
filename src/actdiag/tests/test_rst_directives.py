@@ -15,11 +15,13 @@
 
 import os
 import sys
+
+from blockdiag.tests.utils import TemporaryDirectory, capture_stderr, with_pil
 from docutils import nodes
 from docutils.core import publish_doctree
 from docutils.parsers.rst import directives as docutils
+
 from actdiag.utils.rst import directives
-from blockdiag.tests.utils import capture_stderr, with_pil, TemporaryDirectory
 
 if sys.version_info < (2, 7):
     import unittest2 as unittest

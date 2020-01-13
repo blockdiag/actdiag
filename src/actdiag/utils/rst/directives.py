@@ -13,10 +13,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from docutils.parsers import rst
-from actdiag.utils.rst.nodes import actdiag as actdiag_node
 from blockdiag.utils.rst import directives
+from docutils.parsers import rst
 
+from actdiag.utils.rst.nodes import actdiag as actdiag_node
 
 directive_options_default = dict(format='PNG',
                                  antialias=False,
