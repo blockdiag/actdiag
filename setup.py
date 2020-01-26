@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-import sys
-from setuptools import setup, find_packages
+import os
 
-sys.path.insert(0, 'src')
-import actdiag
+from setuptools import find_packages, setup
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -19,9 +17,22 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
 ]
 
+
+def get_version():
+    """Get version number of the package from version.py without importing core module."""
+    package_dir = os.path.abspath(os.path.dirname(__file__))
+    version_file = os.path.join(package_dir, 'src/actdiag/__init__.py')
+
+    namespace = {}
+    with open(version_file, 'r') as f:
+        exec(f.read(), namespace)
+
+    return namespace['__version__']
+
+
 setup(
     name='actdiag',
-    version=actdiag.__version__,
+    version=get_version(),
     description='actdiag generates activity-diagram image from text',
     long_description=open("README.rst").read(),
     long_description_content_type='text/x-rst',
@@ -55,6 +66,7 @@ setup(
             'flake8',
             'flake8-coding',
             'flake8-copyright',
+            'flake8-isort',
         ],
     ),
     test_suite='nose.collector',
