@@ -30,6 +30,10 @@ setup(
     author_email='i.tkomiya at gmail.com',
     url='http://blockdiag.com/',
     download_url='http://pypi.python.org/pypi/actdiag',
+    project_urls={
+        "Code": "https://github.com/blockdiag/actdiag",
+        "Issue tracker": "https://github.com/blockdiag/actdiag/issues",
+    },
     license='Apache License 2.0',
     py_modules=['actdiag_sphinxhelper'],
     packages=find_packages('src'),
