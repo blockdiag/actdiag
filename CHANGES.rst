@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.0 (2020-01-26)
+------------------
+* Drop python2 and python3.4 support
+
 0.5.4 (2015-01-01)
 ------------------
 * Follow blockdiag-1.5.0 interface
