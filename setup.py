@@ -46,7 +46,6 @@ setup(
         "Issue tracker": "https://github.com/blockdiag/actdiag/issues",
     },
     license='Apache License 2.0',
-    py_modules=['actdiag_sphinxhelper'],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     package_data={'': ['buildout.cfg']},
